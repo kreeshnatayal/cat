@@ -6,7 +6,6 @@ import {
   LayoutDashboard, CalendarDays, FlaskConical,
   BarChart3, BookOpen, Settings, Terminal, Route,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { usePlannerStore } from '@/features/planner/store';
 
 const NAV_ITEMS = [
@@ -26,9 +25,9 @@ export function Sidebar() {
   return (
     <aside
       style={{
-        width: 220,
+        width: 'var(--sidebar-width)',
         height: '100vh',
-        background: 'var(--bg-surface)',
+        background: 'var(--bg-base)',
         borderRight: '1px solid var(--border-subtle)',
         display: 'flex',
         flexDirection: 'column',
@@ -40,108 +39,68 @@ export function Sidebar() {
       {/* ── Logo ── */}
       <div
         style={{
-          height: 72,
+          height: 64,
           display: 'flex',
           alignItems: 'center',
-          padding: '0 20px',
-          gap: 10,
+          padding: '0 24px',
+          gap: 12,
           borderBottom: '1px solid var(--border-subtle)',
           flexShrink: 0,
         }}
       >
         <div
           style={{
-            width: 30,
-            height: 30,
-            borderRadius: 8,
-            background: 'linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-purple) 100%)',
+            width: 24,
+            height: 24,
+            borderRadius: 'var(--radius-sm)',
+            background: 'var(--text-primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0,
-            boxShadow: '0 0 16px var(--accent-primary-glow)',
           }}
         >
-          <Terminal size={15} color="#fff" strokeWidth={2.5} />
+          <Terminal size={14} color="var(--bg-base)" strokeWidth={2.5} />
         </div>
         <div>
-          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
             CAT OS
           </div>
         </div>
       </div>
 
       {/* ── Nav ── */}
-      <nav style={{ flex: 1, padding: '12px 12px', display: 'flex', flexDirection: 'column', gap: 2, overflowY: 'auto' }}>
+      <nav style={{ flex: 1, padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: 4, overflowY: 'auto' }}>
+        <div className="section-label" style={{ paddingLeft: 8, marginBottom: 8 }}>Overview</div>
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const active = pathname === href;
           return (
             <Link key={href} href={href} className={`nav-item ${active ? 'active' : ''}`}>
               <Icon
-                size={15}
+                size={16}
+                strokeWidth={active ? 2.5 : 2}
                 style={{
                   flexShrink: 0,
-                  color: active ? 'var(--accent-primary)' : 'inherit',
+                  color: active ? 'var(--text-primary)' : 'inherit',
                 }}
               />
-              <span style={{ fontSize: 13, whiteSpace: 'nowrap' }}>{label}</span>
-              {active && (
-                <motion.div
-                  layoutId="sidebar-pill"
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    borderRadius: 10,
-                    background: 'rgba(99, 153, 255, 0.08)',
-                    border: '1px solid rgba(99, 153, 255, 0.18)',
-                    zIndex: -1,
-                  }}
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                />
-              )}
+              <span>{label}</span>
             </Link>
           );
         })}
       </nav>
 
       {/* ── Bottom ── */}
-      <div style={{ padding: '16px 12px', borderTop: '1px solid var(--border-subtle)' }}>
-        {streak > 0 ? (
-          <div
-            style={{
-              padding: '10px 12px',
-              borderRadius: 10,
-              background: 'rgba(251, 191, 36, 0.06)',
-              border: '1px solid rgba(251, 191, 36, 0.15)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-            }}
-          >
-            <span style={{ fontSize: 16 }}>🔥</span>
-            <div>
-              <div style={{ fontSize: 12, color: 'var(--accent-amber)', fontWeight: 700 }}>
-                {streak} Day Streak
-              </div>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 1 }}>Don't break the chain</div>
-            </div>
+      <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)' }}>
+        <div style={{ fontSize: 12, color: 'var(--text-secondary)', fontWeight: 500, marginBottom: 8 }}>
+          Current Momentum
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: streak > 0 ? 'var(--accent-green)' : 'var(--border-strong)' }} />
+          <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
+            {streak > 0 ? `${streak} Day Streak` : 'No Active Streak'}
           </div>
-        ) : (
-          <div
-            style={{
-              padding: '10px 12px',
-              borderRadius: 10,
-              background: 'var(--bg-glass)',
-              border: '1px solid var(--border-subtle)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-            }}
-          >
-            <span style={{ fontSize: 16 }}>⚡</span>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Start your first streak</div>
-          </div>
-        )}
+        </div>
       </div>
     </aside>
   );
