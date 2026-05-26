@@ -77,30 +77,19 @@ export function Shell({ children }: { children: React.ReactNode }) {
   if (!mounted) return <AppSkeleton />;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        height: '100vh',
-        overflow: 'hidden',
-        background: 'var(--bg-base)',
-        position: 'relative',
-      }}
-    >
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg-app)', position: 'relative' }}>
       <StoreHydrator />
-
-      {/* Sidebar is now permanently open and simplified */}
       <Sidebar />
-
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 1 }}>
-        <main style={{ flex: 1, overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 1, background: 'var(--bg-app)' }}>
+        <main style={{ flex: 1, overflow: 'auto' }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
-              initial={{ opacity: 0, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, filter: 'blur(4px)' }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              style={{ height: '100%' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
+              style={{ minHeight: '100%', padding: '48px 64px', maxWidth: 1200, margin: '0 auto' }}
             >
               {children}
             </motion.div>
