@@ -110,8 +110,8 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Tactical Terminal (AI) ── */}
-      <div style={{ background: '#0D0D0D', border: '1px solid #3F3F46', borderRadius: 8, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#111', borderBottom: '1px solid #27272A' }}>
+      <div style={{ background: '#111827', border: '1px solid #374151', borderRadius: 8, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#1F2937', borderBottom: '1px solid #374151' }}>
           <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#71717A', letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>
             ▸ Intelligence Engine · gpt-oss-120b
           </span>
