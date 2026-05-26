@@ -101,9 +101,14 @@ export default function DashboardPage() {
                Level {levelInfo.level}
              </span>
           </div>
-          <h1 className="mono" style={{ fontSize: 'clamp(72px, 12vw, 140px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 1, color: 'var(--text-primary)', marginBottom: 20, textShadow: '0 0 40px rgba(255,255,255,0.1)' }}>
-            {daysLeft} <span style={{ fontSize: '0.4em', color: 'var(--text-muted)', verticalAlign: 'middle', marginLeft: -10 }}>DAYS</span>
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 12, marginBottom: 20, textShadow: '0 0 40px rgba(255,255,255,0.1)' }}>
+            <div className="mono" style={{ fontSize: 'clamp(72px, 12vw, 140px)', fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, color: 'var(--text-primary)' }}>
+              {daysLeft}
+            </div>
+            <div style={{ fontSize: 'clamp(24px, 4vw, 48px)', color: 'var(--text-muted)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1 }}>
+              DAYS
+            </div>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20 }}>
             <span style={{ width: 80, height: 1, background: 'var(--border-strong)' }} />
             <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
@@ -141,12 +146,12 @@ export default function DashboardPage() {
                     {isRecovery ? 'System Override' : 'Primary Mission'}
                   </div>
                 </div>
-                <h2 className="mono" style={{ fontSize: 36, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>
+                <h2 className="mono" style={{ fontSize: 36, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.03em', textTransform: 'uppercase', lineHeight: 1.2, whiteSpace: 'normal', wordBreak: 'break-word' }}>
                   {battle.focus}
                 </h2>
               </div>
               
-              <div style={{ width: 200 }}>
+              <div style={{ flex: 1, maxWidth: 200, minWidth: 120, marginLeft: 24 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: 8 }}>
                   <span>Progress</span>
                   <span className="mono" style={{ color }}>{mvdStreak >= 7 ? 100 : Math.round((mvdStreak / 7) * 100)}%</span>

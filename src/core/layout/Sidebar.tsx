@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, CalendarDays, FlaskConical,
-  BarChart3, BookOpen, Settings, Zap, Route,
+  BarChart3, BookOpen, Settings, Terminal, Route,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePlannerStore } from '@/features/planner/store';
@@ -62,14 +62,11 @@ export function Sidebar() {
             boxShadow: '0 0 16px var(--accent-primary-glow)',
           }}
         >
-          <Zap size={15} color="#fff" strokeWidth={2.5} />
+          <Terminal size={15} color="#fff" strokeWidth={2.5} />
         </div>
         <div>
           <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.04em' }}>
             CAT OS
-          </div>
-          <div style={{ fontSize: 10, color: 'var(--text-muted)', letterSpacing: '0.05em', textTransform: 'uppercase', fontWeight: 600 }}>
-            v2.0
           </div>
         </div>
       </div>
