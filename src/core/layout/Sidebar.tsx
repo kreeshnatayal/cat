@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, CalendarDays, FlaskConical,
-  BarChart3, BookOpen, Settings, Terminal, Route,
+  BarChart3, BookOpen, Settings, Terminal, Route, Brain,
 } from 'lucide-react';
 import { usePlannerStore } from '@/features/planner/store';
 
@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { href: '/mocks',     label: 'Mock Lab',        icon: FlaskConical },
   { href: '/analytics', label: 'Analytics',      icon: BarChart3 },
   { href: '/revision',  label: 'Revision',        icon: BookOpen },
+  { href: '/ai',        label: 'Tactical AI',     icon: Brain },
   { href: '/settings',  label: 'Settings',        icon: Settings },
 ];
 
