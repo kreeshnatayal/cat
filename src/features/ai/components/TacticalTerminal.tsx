@@ -17,7 +17,8 @@ export function TacticalTerminal() {
   const mvdCount = usePlannerStore(s => s.getMVDCount());
   const mocks = useMockStore(s => s.mocks);
   const bestPercentile = useMockStore(s => s.getBestPercentile());
-  const dueTopics = useRevisionStore(s => s.topics.filter(isDue));
+  const topics = useRevisionStore(s => s.topics);
+  const dueTopics = topics.filter(isDue);
   const phaseOverride = useRoadmapStore(s => s.manualPhaseOverride);
   const currentPhase = getCurrentPhase(phaseOverride);
   const levelInfo = computeLevel(mvdCount, mocks.length, bestPercentile);
