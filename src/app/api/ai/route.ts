@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+// Node runtime (edge runtime does not read .env.local in dev)
 
 export async function POST(req: Request) {
   try {
