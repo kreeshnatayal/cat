@@ -2,18 +2,19 @@
 @import "tailwindcss";
 
 :root {
-  /* ── Core Backgrounds (Pure Black / Monochromatic) ── */
-  --bg-base:     #000000;
+  /* ── Core Backgrounds ── */
+  --bg-base:     #050505;
   --bg-surface:  #0A0A0A;
   --bg-elevated: #111111;
-  --bg-card:     #161616;
-  --bg-glass:    rgba(255, 255, 255, 0.02);
-  --bg-glass-hover: rgba(255, 255, 255, 0.05);
+  --bg-card:     #141414;
+  --bg-glass:    rgba(255, 255, 255, 0.03);
+  --bg-glass-hover: rgba(255, 255, 255, 0.08);
 
-  /* ── Borders (Extremely Subtle) ── */
+  /* ── Borders ── */
   --border-subtle:  #27272A;
   --border-default: #3F3F46;
   --border-strong:  #52525B;
+  --border-glow:    rgba(94, 106, 210, 0.3);
 
   /* ── Primary Accent (Linear Blurple / Clean Blue) ── */
   --accent-primary:       #5E6AD2;
@@ -32,12 +33,12 @@
   --text-muted:     #71717A;
   --text-disabled:  #3F3F46;
 
-  /* ── Layout & Geometry (Sharp, Intentional) ── */
-  --sidebar-width:  240px;
-  --radius-sm:  4px;
-  --radius-md:  6px;
-  --radius-lg:  8px;
-  --radius-xl:  12px;
+  /* ── Layout & Geometry ── */
+  --sidebar-width:  250px;
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
 }
 
 /* ── Reset ── */
@@ -67,42 +68,46 @@ html, body {
 
 h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
 
-/* ── Surface Card (Flat, no shadow) ── */
+/* ── Surface Card ── */
 .surface-card {
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  transition: border-color 0.15s ease, background 0.15s ease;
+  box-shadow: 0 4px 24px -12px rgba(0,0,0,0.5);
+  transition: all 0.2s ease;
 }
 .surface-card:hover {
   border-color: var(--border-default);
   background: var(--bg-card);
+  box-shadow: 0 8px 32px -12px rgba(0,0,0,0.8);
 }
 
-/* ── Glass Card (Removed blur, just subtle BG) ── */
+/* ── Glass Card ── */
 .glass-card {
   background: var(--bg-glass);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  transition: background 0.15s ease, border-color 0.15s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
 }
 .glass-card:hover {
   background: var(--bg-glass-hover);
   border-color: var(--border-default);
 }
 
-/* ── Nav Item (Clean, Vercel-style) ── */
+/* ── Nav Item ── */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: color 0.1s ease, background 0.1s ease;
+  transition: all 0.15s ease;
   text-decoration: none;
   position: relative;
 }
@@ -111,19 +116,10 @@ h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
   background: var(--bg-glass);
 }
 .nav-item.active {
-  color: var(--text-primary);
-  background: var(--bg-glass-hover);
-  font-weight: 500;
-}
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 4px;
-  bottom: 4px;
-  width: 2px;
-  background: var(--text-primary);
-  border-radius: 2px;
+  color: var(--accent-primary);
+  background: var(--accent-primary-muted);
+  font-weight: 600;
+  border: 1px solid var(--border-glow);
 }
 
 /* ── Buttons (Sharp, no massive glows) ── */

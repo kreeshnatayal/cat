@@ -109,14 +109,24 @@ export const usePlannerStore = create<PlannerStore>()(
         const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
         let streak = 0;
         const today = new Date().toISOString().slice(0, 10);
-        let check = today;
+        
+        let checkDate = today;
+        const todayEntry = sorted.find(e => e.date === today);
+        
+        // If today isn't met yet, the streak relies on yesterday
+        if (!todayEntry || !todayEntry.mvdMet) {
+          const d = new Date(today);
+          d.setDate(d.getDate() - 1);
+          checkDate = d.toISOString().slice(0, 10);
+        }
+
         for (const e of sorted) {
-          if (e.date === check && e.mvdMet) { // Streak is now based on MVD
+          if (e.date === checkDate && e.mvdMet) {
             streak++;
-            const d = new Date(check);
+            const d = new Date(checkDate);
             d.setDate(d.getDate() - 1);
-            check = d.toISOString().slice(0, 10);
-          } else if (e.date < check) {
+            checkDate = d.toISOString().slice(0, 10);
+          } else if (e.date < checkDate) {
             break;
           }
         }
