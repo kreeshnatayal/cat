@@ -12,7 +12,7 @@ import { useSystemStore, computeLevel } from '@/core/store/systemStore';
 import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts';
 import { ShieldAlert, Target, Shield, BookOpen, Zap } from 'lucide-react';
 import { SurfaceCard } from '@/core/ui/SurfaceCard';
-import { TacticalTerminal } from '@/features/ai/components/TacticalTerminal';
+// TacticalTerminal inlined
 
 function useCountdown() {
   const [days, setDays] = useState(0);
@@ -110,14 +110,50 @@ export default function DashboardPage() {
       </div>
 
       {/* ── Tactical Terminal (AI) ── */}
-      <TacticalTerminal
-        streak={mvdStreak}
-        mvdCount={mvdCount}
-        level={levelInfo.level}
-        phase={currentPhase.name}
-        dueRevisionsCount={dueTopics.length}
-        recentMocks={recentMocks}
-      />
+      <div style={{ background: '#0D0D0D', border: '1px solid #3F3F46', borderRadius: 8, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#111', borderBottom: '1px solid #27272A' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#71717A', letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>
+            ▸ Intelligence Engine · gpt-oss-120b
+          </span>
+          <button
+            id="ai-execute-btn"
+            onClick={async () => {
+              const btn = document.getElementById('ai-execute-btn') as HTMLButtonElement;
+              const body = document.getElementById('ai-response-body') as HTMLDivElement;
+              if (!btn || !body) return;
+              btn.disabled = true;
+              btn.textContent = 'Processing...';
+              body.textContent = '';
+              try {
+                const res = await fetch('/api/ai', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ messages: [
+                    { role: 'system', content: `You are the CAT OS Tactical AI. Brutal, direct coach for CAT exam prep. No emojis. Military-style. Under 120 words. User: Streak=${mvdStreak} days, Level=${levelInfo.level}, Phase=${currentPhase.name}, Due Revisions=${dueTopics.length}, Recent Mocks=${JSON.stringify(recentMocks.slice(-3))}. Rip into them if streak is 0. Push harder if doing well.` },
+                    { role: 'user', content: 'Daily briefing.' }
+                  ]})
+                });
+                if (!res.ok || !res.body) { body.textContent = '[ERROR] Could not reach AI.'; return; }
+                const reader = res.body.getReader();
+                const dec = new TextDecoder();
+                while (true) {
+                  const { done, value } = await reader.read();
+                  if (done) break;
+                  body.textContent += dec.decode(value, { stream: true });
+                }
+              } catch(e: unknown) { body.textContent = `[ERROR] ${e instanceof Error ? e.message : 'Unknown'}`; }
+              finally { btn.disabled = false; btn.textContent = 'Execute'; }
+            }}
+            style={{ background: 'transparent', border: '1px solid #52525B', color: '#FAFAFA', padding: '4px 14px', fontSize: 11, fontWeight: 600, borderRadius: 4, cursor: 'pointer', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}
+          >
+            Execute
+          </button>
+        </div>
+        <div id="ai-response-body" style={{ padding: '16px 20px', minHeight: 90, fontFamily: 'monospace', fontSize: 13, color: '#71717A', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+          {'> System standing by. Click EXECUTE for your daily tactical briefing.'}
+        </div>
+      </div>
+
 
       <div className="divider" />
 
