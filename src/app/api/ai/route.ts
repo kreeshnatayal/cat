@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-oss-120b',
+        model: 'openai/gpt-oss-120b',
         messages,
         temperature: 0.3,
         max_tokens: 1024,
