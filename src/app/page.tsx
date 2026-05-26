@@ -12,6 +12,7 @@ import { useSystemStore, computeLevel } from '@/core/store/systemStore';
 import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts';
 import { ShieldAlert, Target, Shield, BookOpen, Zap } from 'lucide-react';
 import { SurfaceCard } from '@/core/ui/SurfaceCard';
+import { TacticalTerminal } from '@/features/ai/components/TacticalTerminal';
 
 function useCountdown() {
   const [days, setDays] = useState(0);
@@ -109,6 +110,8 @@ export default function DashboardPage() {
           {levelInfo.name}
         </div>
       </div>
+
+      <TacticalTerminal />
 
       <div className="divider" />
 
