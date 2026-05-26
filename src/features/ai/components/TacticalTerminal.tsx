@@ -2,56 +2,41 @@
 
 import { useState } from 'react';
 import { Terminal as TerminalIcon, Loader2 } from 'lucide-react';
-import { usePlannerStore } from '@/features/planner/store';
-import { useMockStore } from '@/features/mocks/store';
-import { useRevisionStore, isDue } from '@/features/revision/store';
-import { useRoadmapStore, getCurrentPhase } from '@/features/roadmap/store';
-import { computeLevel } from '@/core/store/systemStore';
 
-export function TacticalTerminal() {
+interface Props {
+  streak: number;
+  mvdCount: number;
+  level: number;
+  phase: string;
+  dueRevisionsCount: number;
+  recentMocks: unknown[];
+}
+
+export function TacticalTerminal({ streak, mvdCount, level, phase, dueRevisionsCount, recentMocks }: Props) {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // Grab all context invisibly
-  const streak = usePlannerStore(s => s.getStreak());
-  const mvdCount = usePlannerStore(s => s.getMVDCount());
-  const mocks = useMockStore(s => s.mocks);
-  const bestPercentile = useMockStore(s => s.getBestPercentile());
-  const topics = useRevisionStore(s => s.topics);
-  const dueTopics = topics.filter(isDue);
-  const phaseOverride = useRoadmapStore(s => s.manualPhaseOverride);
-  const currentPhase = getCurrentPhase(phaseOverride);
-  const levelInfo = computeLevel(mvdCount, mocks.length, bestPercentile);
 
   const generateBriefing = async () => {
     if (loading) return;
     setLoading(true);
     setResponse('');
 
-    const contextData = {
-      streak,
-      mvdCount,
-      level: levelInfo.level,
-      phase: currentPhase.name,
-      recentMocks: mocks.slice(-3),
-      dueRevisionsCount: dueTopics.length,
-    };
-
-    const systemPrompt = `You are the CAT OS Tactical AI. You are a brutal, highly analytical, extremely direct strategic coach for a student preparing for the CAT (Common Admission Test for IIMs).
-Do NOT be polite. Do NOT use emojis. Do NOT sound like ChatGPT. Use short, punchy, military-style sentences.
+    const systemPrompt = `You are the CAT OS Tactical AI — a brutal, highly analytical, extremely direct strategic coach for a student preparing for CAT (Common Admission Test for IIMs).
+Do NOT be polite. Do NOT use emojis. Do NOT sound like ChatGPT. Use short, punchy sentences.
 
 USER STATUS:
-- Current Phase: ${contextData.phase}
-- OS Level: ${contextData.level}
-- Consistency Streak: ${contextData.streak} days
-- Revisions Due: ${contextData.dueRevisionsCount} topics
-- Recent Mocks: ${JSON.stringify(contextData.recentMocks)}
+- Current Phase: ${phase}
+- OS Level: ${level}
+- Consistency Streak: ${streak} days
+- Revisions Due: ${dueRevisionsCount} topics
+- Total MVDs Completed: ${mvdCount}
+- Recent Mocks: ${JSON.stringify(recentMocks)}
 
-If their streak is 0, rip into them for being inconsistent.
-If they have many due revisions, order them to clear the queue.
-If their mock scores are dropping, identify the weak section and demand a fix.
-If they are doing great, tell them to push harder.
-Keep it under 150 words. Format with line breaks for readability.`;
+If streak is 0, rip into them for inconsistency.
+If many revisions are due, order them to clear the queue.
+If mock scores are dropping, identify the weak section and demand a fix.
+If doing great, push harder.
+Keep under 150 words. Use line breaks.`;
 
     try {
       const res = await fetch('/api/ai', {
@@ -67,14 +52,13 @@ Keep it under 150 words. Format with line breaks for readability.`;
 
       if (!res.ok) {
         const err = await res.json();
-        setResponse(`[ERROR]: ${err.error || 'Failed to connect to Groq neural net.'}`);
+        setResponse(`[ERROR]: ${err.error || 'Failed to reach intelligence engine.'}`);
         setLoading(false);
         return;
       }
 
       const reader = res.body?.getReader();
       const decoder = new TextDecoder('utf-8');
-
       if (!reader) return;
 
       while (true) {
@@ -83,8 +67,8 @@ Keep it under 150 words. Format with line breaks for readability.`;
         const text = decoder.decode(value, { stream: true });
         setResponse(prev => prev + text);
       }
-    } catch (e: any) {
-      setResponse(`[FATAL ERROR]: ${e.message}`);
+    } catch (e: unknown) {
+      setResponse(`[FATAL ERROR]: ${e instanceof Error ? e.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -92,57 +76,63 @@ Keep it under 150 words. Format with line breaks for readability.`;
 
   return (
     <div style={{
-      background: 'var(--bg-card)',
-      border: '1px solid var(--border-subtle)',
-      borderRadius: 'var(--radius-lg)',
+      background: '#0D0D0D',
+      border: '1px solid #27272A',
+      borderRadius: 8,
       overflow: 'hidden',
     }}>
-      {/* Terminal Header */}
+      {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '12px 16px', background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border-subtle)'
+        padding: '10px 16px',
+        background: '#111111',
+        borderBottom: '1px solid #27272A',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <TerminalIcon size={14} color="var(--accent-primary)" />
-          <span className="mono" style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.05em' }}>
-            INTELLIGENCE ENGINE // gpt-oss-120b
+          <TerminalIcon size={13} color="#5E6AD2" />
+          <span style={{ fontFamily: 'monospace', fontSize: 11, fontWeight: 600, color: '#71717A', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            Intelligence Engine · gpt-oss-120b
           </span>
         </div>
-        <button 
+        <button
           onClick={generateBriefing}
           disabled={loading}
           style={{
             background: 'transparent',
-            border: '1px solid var(--border-strong)',
-            color: 'var(--text-primary)',
-            padding: '4px 12px',
+            border: '1px solid #3F3F46',
+            color: '#FAFAFA',
+            padding: '4px 14px',
             fontSize: 11,
             fontWeight: 600,
-            borderRadius: 'var(--radius-sm)',
+            borderRadius: 4,
             cursor: loading ? 'not-allowed' : 'pointer',
             textTransform: 'uppercase',
-            letterSpacing: '0.05em',
+            letterSpacing: '0.06em',
             display: 'flex',
             alignItems: 'center',
-            gap: 6
+            gap: 6,
+            opacity: loading ? 0.6 : 1,
           }}
         >
-          {loading ? <Loader2 size={12} className="animate-spin" /> : 'Execute'}
+          {loading ? <><Loader2 size={11} style={{ animation: 'spin 1s linear infinite' }} /> Processing</> : 'Execute'}
         </button>
       </div>
 
-      {/* Terminal Body */}
-      <div className="mono" style={{
-        padding: '20px 24px',
-        minHeight: 120,
+      {/* Body */}
+      <div style={{
+        padding: '18px 20px',
+        minHeight: 100,
+        fontFamily: 'monospace',
         fontSize: 13,
-        color: response ? 'var(--text-primary)' : 'var(--text-muted)',
-        lineHeight: 1.6,
+        color: response ? '#FAFAFA' : '#52525B',
+        lineHeight: 1.7,
         whiteSpace: 'pre-wrap',
       }}>
-        {response || '> System standing by. Click EXECUTE to generate daily tactical briefing.'}
-        {loading && <span style={{ animation: 'pulse 1s infinite' }}>_</span>}
+        {response || '> System standing by. Click EXECUTE to generate tactical briefing.'}
+        {loading && <span style={{ opacity: 0.6 }}>▌</span>}
       </div>
+
+      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }
