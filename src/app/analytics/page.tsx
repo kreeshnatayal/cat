@@ -1,9 +1,9 @@
 'use client';
 
 import { useMemo } from 'react';
-import { usePlannerStore } from '@/lib/store/plannerStore';
-import { useMockStore } from '@/lib/store/mockStore';
-import { SECTION_COLORS } from '@/lib/constants';
+import { usePlannerStore } from '@/features/planner/store';
+import { useMockStore } from '@/features/mocks/store';
+import { SECTION_COLORS } from '@/core/utils/constants';
 import { motion } from 'framer-motion';
 import { format, subDays, eachDayOfInterval } from 'date-fns';
 import {
@@ -15,7 +15,7 @@ import {
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string }[]; label?: string }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: var(--radius-md), padding: '12px 16px', fontSize: 13, boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+    <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-)', padding: '12px 16px', fontSize: 13, boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
       <div style={{ color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 11 }}>{label}</div>
       {payload.map((p) => (
         <div key={p.name} style={{ color: p.color ?? 'var(--text-primary)', display: 'flex', gap: 12, justifyContent: 'space-between', marginBottom: 4 }}>

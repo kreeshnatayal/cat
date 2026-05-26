@@ -5,8 +5,8 @@ import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import { StoreHydrator } from '@/components/StoreHydrator';
-import { useRoadmapStore, getCurrentPhase } from '@/lib/store/roadmapStore';
+import { StoreHydrator } from '@/core/store/StoreHydrator';
+import { useRoadmapStore, getCurrentPhase } from '@/features/roadmap/store';
 
 /**
  * Loading skeleton shown during SSR / before client hydration.

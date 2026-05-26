@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Section, TopicStatus } from '../constants';
+import type { Section, TopicStatus } from '@/core/utils/constants';
 
 export interface RevisionTopic {
   id: string;

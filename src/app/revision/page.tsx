@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useRevisionStore, RevisionTopic, isDue } from '@/lib/store/revisionStore';
-import { SECTIONS, RETENTION_LEVELS, TOPIC_STATUS, SECTION_COLORS } from '@/lib/constants';
-import type { Section, TopicStatus } from '@/lib/constants';
+import { useRevisionStore, RevisionTopic, isDue } from '@/features/revision/store';
+import { SECTIONS, RETENTION_LEVELS, TOPIC_STATUS, SECTION_COLORS } from '@/core/utils/constants';
+import type { Section, TopicStatus } from '@/core/utils/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, X, CheckCircle2, AlertTriangle, BookOpen, Clock, BrainCircuit } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
@@ -235,7 +235,7 @@ export default function RevisionPage() {
                     {isDueForRev && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--accent-amber)' }} />}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: SECTION_COLORS[topic.subject], letterSpacing: '0.08em', marginBottom: 12, textTransform: 'uppercase' }}>
+                        <div style={{ fontSize: 11, fontWeight: 800, color: SECTION_COLORS[topic.subject as keyof typeof SECTION_COLORS], letterSpacing: '0.08em', marginBottom: 12, textTransform: 'uppercase' }}>
                           {topic.subject}
                         </div>
                         <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4, letterSpacing: '-0.02em' }}>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useMockStore, MockEntry, MistakeCluster } from '@/lib/store/mockStore';
-import { SECTION_COLORS, MOCK_SERIES } from '@/lib/constants';
+import { useMockStore, MockEntry, MistakeCluster } from '@/features/mocks/store';
+import { SECTION_COLORS, MOCK_SERIES } from '@/core/utils/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Brain, AlertTriangle, Clock, Target, ArrowRight } from 'lucide-react';
 import { format } from 'date-fns';
@@ -49,7 +49,7 @@ function MockForm({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
-  const inputStyle = { width: '100%', padding: '12px 16px', borderRadius: var(--radius-md), fontSize: 14, background: 'rgba(255,255,255,0.025)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', outline: 'none', transition: 'all 0.2s' };
+  const inputStyle = { width: '100%', padding: '12px 16px', borderRadius: 'var(--radius-)', fontSize: 14, background: 'rgba(255,255,255,0.025)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', outline: 'none', transition: 'all 0.2s' };
   const labelStyle = { fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' as const, letterSpacing: '0.06em', fontWeight: 700 };
 
   return (
@@ -60,7 +60,7 @@ function MockForm({ onClose }: { onClose: () => void }) {
     >
       <motion.div
         initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} transition={{ duration: 0.3, ease: 'easeOut' }}
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: var(--radius-xl), padding: 40, width: '100%', maxWidth: 760, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px -16px rgba(0,0,0,0.8)' }}
+        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)', padding: 40, width: '100%', maxWidth: 760, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px -16px rgba(0,0,0,0.8)' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
           <div>
@@ -116,7 +116,7 @@ function MockForm({ onClose }: { onClose: () => void }) {
                 { key: 'timing', label: 'Time Mgmt', color: 'var(--accent-primary)' },
                 { key: 'conceptual', label: 'Conceptual', color: 'var(--text-muted)' },
               ].map(({ key, label, color }) => (
-                <div key={key} style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid var(--border-subtle)', borderRadius: var(--radius-lg), padding: 20, transition: 'all 0.2s' }}>
+                <div key={key} style={{ background: 'rgba(255,255,255,0.015)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)', padding: 20, transition: 'all 0.2s' }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</div>
                   <input 
                     type="number" value={form.mistakes[key as keyof MistakeCluster] || ''} 
@@ -142,7 +142,7 @@ function MockForm({ onClose }: { onClose: () => void }) {
 const CustomTooltip = ({ active, payload }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: var(--radius-md), padding: '10px 14px', fontSize: 13, boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
+    <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)', padding: '10px 14px', fontSize: 13, boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
       <div className="mono" style={{ color: 'var(--text-primary)', fontWeight: 700, marginBottom: 2, fontSize: 15 }}>{payload[0].value}%ile</div>
       <div style={{ color: 'var(--text-muted)', fontWeight: 500 }}>{payload[0].payload.name}</div>
     </div>
@@ -274,7 +274,7 @@ export default function MocksPage() {
                 return insights.map((insight, idx) => (
                   <div key={idx} style={{ 
                     display: 'flex', alignItems: 'center', gap: 20, padding: '20px 24px', 
-                    background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: var(--radius-md) 
+                    background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)' 
                   }}>
                     {insight.severity === 'High' && <div style={{ padding: 8, background: 'rgba(251,113,133,0.1)', borderRadius: '50%' }}><AlertTriangle size={18} color="var(--accent-rose)" /></div>}
                     {insight.severity === 'Medium' && <div style={{ padding: 8, background: 'rgba(251,191,36,0.1)', borderRadius: '50%' }}><Clock size={18} color="var(--accent-amber)" /></div>}

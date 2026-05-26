@@ -7,7 +7,7 @@ import {
   BarChart3, BookOpen, Settings, Zap, Route,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { usePlannerStore } from '@/lib/store/plannerStore';
+import { usePlannerStore } from '@/features/planner/store';
 
 const NAV_ITEMS = [
   { href: '/',          label: 'Dashboard',     icon: LayoutDashboard },

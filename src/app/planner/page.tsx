@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { usePlannerStore, calcCompletion, PlannerEntry } from '@/lib/store/plannerStore';
-import { useSystemStore, THEME_DAYS, MentalState } from '@/lib/store/systemStore';
-import { useRoadmapStore, getCurrentPhase, getDailyTopics } from '@/lib/store/roadmapStore';
-import { SECTION_COLORS } from '@/lib/constants';
+import { usePlannerStore, calcCompletion, PlannerEntry } from '@/features/planner/store';
+import { useSystemStore, THEME_DAYS, MentalState } from '@/core/store/systemStore';
+import { useRoadmapStore, getCurrentPhase, getDailyTopics } from '@/features/roadmap/store';
+import { SECTION_COLORS } from '@/core/utils/constants';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, Zap, Activity, Brain, Crosshair, X, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
-import { TaskCard } from '@/components/ui/TaskCard';
+import { TaskCard } from '@/features/planner/components/TaskCard';
 
 const MENTAL_STATES: { state: MentalState; color: string; emoji: string }[] = [
   { state: 'Focused',    color: 'var(--accent-primary)',  emoji: '⚡' },
@@ -269,7 +269,7 @@ export default function PlannerPage() {
           <input
             type="range" min="0" max="8" step="0.5"
             value={form.pmHours}
-            onChange={(e) => setForm(f => ({ ...f, pmHours: e.target.value }))}
+            onChange={(e) => setForm(f => ({ ...f, pmHours: Number(e.target.value) }))}
             style={{ width: '100%', accentColor: 'var(--accent-primary)' }}
           />
           <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 10, lineHeight: 1.6 }}>

@@ -3,12 +3,12 @@
 import { useMemo, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { CAT_DATE } from '@/lib/constants';
-import { usePlannerStore } from '@/lib/store/plannerStore';
-import { useMockStore } from '@/lib/store/mockStore';
-import { useRevisionStore, isDue } from '@/lib/store/revisionStore';
-import { useRoadmapStore, getCurrentPhase } from '@/lib/store/roadmapStore';
-import { useSystemStore, computeLevel } from '@/lib/store/systemStore';
+import { CAT_DATE } from '@/core/utils/constants';
+import { usePlannerStore } from '@/features/planner/store';
+import { useMockStore } from '@/features/mocks/store';
+import { useRevisionStore, isDue } from '@/features/revision/store';
+import { useRoadmapStore, getCurrentPhase } from '@/features/roadmap/store';
+import { useSystemStore, computeLevel } from '@/core/store/systemStore';
 import { LineChart, Line, ResponsiveContainer, YAxis } from 'recharts';
 import { ShieldAlert, Target, Shield, BookOpen, Zap, ChevronRight, Activity } from 'lucide-react';
 
@@ -71,7 +71,7 @@ export default function DashboardPage() {
             padding: '14px 24px', 
             background: 'rgba(251, 113, 133, 0.08)', 
             border: '1px solid rgba(251, 113, 133, 0.2)', 
-            borderRadius: var(--radius-md), 
+            borderRadius: 'var(--radius-)', 
             display: 'flex', alignItems: 'center', gap: 16, 
             color: 'var(--accent-rose)' 
           }}

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Section } from '../constants';
+import type { Section } from '@/core/utils/constants';
 
 export interface SectionData {
   attempted: number;

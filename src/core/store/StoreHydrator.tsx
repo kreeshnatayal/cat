@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePlannerStore } from '@/lib/store/plannerStore';
-import { useMockStore } from '@/lib/store/mockStore';
-import { useRevisionStore, RevisionTopic } from '@/lib/store/revisionStore';
-import { useSystemStore, WeeklyBattle } from '@/lib/store/systemStore';
-import { QA_SYLLABUS, DILR_SYLLABUS, VARC_SYLLABUS, BLUEPRINT_BATTLES } from '@/lib/store/syllabusData';
-import { Section } from '@/lib/constants';
+import { usePlannerStore } from '@/features/planner/store';
+import { useMockStore } from '@/features/mocks/store';
+import { useRevisionStore, RevisionTopic } from '@/features/revision/store';
+import { useSystemStore, WeeklyBattle } from '@/core/store/systemStore';
+import { QA_SYLLABUS, DILR_SYLLABUS, VARC_SYLLABUS, BLUEPRINT_BATTLES } from '@/features/revision/syllabus';
+import { Section } from '@/core/utils/constants';
 
 /**
  * Triggers localStorage rehydration for all Zustand stores after the

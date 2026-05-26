@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { MentalState } from './systemStore';
+import { MentalState } from '@/core/store/systemStore';
 
 export interface PlannerEntry {
   id: string;
@@ -29,7 +29,7 @@ interface PlannerStore {
   getMVDCount: () => number;
 }
 
-import { THEME_DAYS } from './systemStore';
+import { THEME_DAYS } from '@/core/store/systemStore';
 
 // Dynamic Completion Calculation based on THEME_DAYS targets
 function calcCompletion(entry: Omit<PlannerEntry, 'completionPercent' | 'mvdMet' | 'id'>): { percent: number; mvdMet: boolean } {

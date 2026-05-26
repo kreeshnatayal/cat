@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Shell } from '@/components/layout/Shell';
+import { Shell } from '@/core/layout/Shell';
 
 export const metadata: Metadata = {
   title: 'CAT OS — Your Elite Prep Dashboard',

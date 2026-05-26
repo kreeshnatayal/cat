@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { usePlannerStore } from './plannerStore';
+import { usePlannerStore } from '@/features/planner/store';
 
 export type MentalState = 'Focused' | 'Distracted' | 'Anxious' | 'Calm' | 'Burnt Out';
 export type PerformanceState = 'Locked In' | 'Stable' | 'Friction' | 'Burnout Risk' | 'Collapse';

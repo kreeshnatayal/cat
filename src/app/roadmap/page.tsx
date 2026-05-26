@@ -2,9 +2,9 @@
 
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { useRoadmapStore, PHASES, getCurrentPhase } from '@/lib/store/roadmapStore';
+import { useRoadmapStore, PHASES, getCurrentPhase } from '@/features/roadmap/store';
 import { Target as TargetIcon, Clock, Zap, FlaskConical } from 'lucide-react';
-import { SECTION_COLORS } from '@/lib/constants';
+import { SECTION_COLORS } from '@/core/utils/constants';
 
 export default function RoadmapPage() {
   const manualPhaseOverride = useRoadmapStore((s) => s.manualPhaseOverride);
@@ -40,7 +40,7 @@ export default function RoadmapPage() {
               style={{
                 flexShrink: 0,
                 padding: '20px 28px',
-                borderRadius: var(--radius-xl),
+                borderRadius: 'var(--radius-)',
                 background: isSelected ? 'var(--text-primary)' : 'var(--bg-glass)',
                 color: isSelected ? 'var(--bg-base)' : 'var(--text-secondary)',
                 border: `1px solid ${isSelected ? 'transparent' : 'var(--border-subtle)'}`,

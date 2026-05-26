@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { usePlannerStore } from '@/lib/store/plannerStore';
-import { useMockStore } from '@/lib/store/mockStore';
-import { useRevisionStore } from '@/lib/store/revisionStore';
-import { CAT_DATE } from '@/lib/constants';
+import { usePlannerStore } from '@/features/planner/store';
+import { useMockStore } from '@/features/mocks/store';
+import { useRevisionStore } from '@/features/revision/store';
+import { CAT_DATE } from '@/core/utils/constants';
 import { motion } from 'framer-motion';
 import { Download, Trash2, AlertTriangle, Settings, Database, Calendar } from 'lucide-react';
 
