@@ -3,7 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { usePlannerStore, calcCompletion, PlannerEntry } from '@/features/planner/store';
-import { useSystemStore, THEME_DAYS, MentalState } from '@/core/store/systemStore';
+import { useMockStore } from '@/features/mocks/store';
+import { useRevisionStore, isDue } from '@/features/revision/store';
+import { useSystemStore, THEME_DAYS, MentalState, computeLevel } from '@/core/store/systemStore';
 import { useRoadmapStore, getCurrentPhase, getDailyTopics } from '@/features/roadmap/store';
 import { SECTION_COLORS } from '@/core/utils/constants';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,6 +25,14 @@ export default function PlannerPage() {
   const today        = new Date().toISOString().slice(0, 10);
   const addEntry     = usePlannerStore((s) => s.addEntry);
   const existingEntry = usePlannerStore((s) => s.getEntryByDate(today));
+  
+  const streak = usePlannerStore((s) => s.getStreak());
+  const mvdCount = usePlannerStore((s) => s.getMVDCount());
+  const mocks = useMockStore((s) => s.mocks);
+  const bestPercentile = useMockStore((s) => s.getBestPercentile());
+  const topics = useRevisionStore((s) => s.topics);
+  const dueCount = topics.filter(isDue).length;
+  const level = computeLevel(mvdCount, mocks.length, bestPercentile);
 
   const dateObj  = new Date(today + 'T00:00:00');
   const dayOfWeek = dateObj.getDay();
@@ -47,8 +57,51 @@ export default function PlannerPage() {
 
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [mounted, setMounted]         = useState(false);
+  const [aiOutput, setAiOutput]       = useState('');
+  const [aiLoading, setAiLoading]     = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
+
+  const runAI = async (prompt: string) => {
+    if (aiLoading) return;
+    setAiLoading(true);
+    setAiOutput('');
+
+    const system = `You are the CAT OS Tactical AI. You are a brutal, highly analytical, extremely direct strategic coach for a student preparing for CAT. Do NOT be polite. Do NOT use emojis. Military-style sentences only. Under 150 words. Use line breaks.
+
+USER STATUS:
+- Phase: ${phase.name}
+- Level: ${level.level} (${level.name})
+- Streak: ${streak} days
+- Due Revisions: ${dueCount} topics
+- Total MVDs: ${mvdCount}`;
+
+    try {
+      const res = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }] })
+      });
+
+      if (!res.body) { setAiOutput('[ERROR] No response body.'); return; }
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        setAiOutput(p => p + dec.decode(value, { stream: true }));
+      }
+    } catch (e: unknown) {
+      setAiOutput(`[ERROR] ${e instanceof Error ? e.message : 'Unknown'}`);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const aiActions = [
+    { label: 'DAILY_BRIEFING', prompt: 'Give me my daily tactical briefing based on my current status.' },
+    { label: 'BURN_CHECK', prompt: 'Check if I am burning out. Give me an honest assessment and recovery protocol.' },
+  ];
 
   const { percent: completionPercent, mvdMet } = calcCompletion(form);
 
@@ -306,6 +359,49 @@ export default function PlannerPage() {
                 style={{ resize: 'none' }}
               />
             </div>
+          </div>
+        </div>
+
+        {/* ── Tactical AI Terminal ── */}
+        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', minHeight: 300 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+            <Brain size={14} color="var(--accent-cyan)" />
+            <span className="hud-text" style={{ color: 'var(--accent-cyan)' }}>TACTICAL_AI_COPILOT</span>
+          </div>
+          
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+            {aiActions.map(a => (
+              <button
+                key={a.label}
+                onClick={() => runAI(a.prompt)}
+                disabled={aiLoading}
+                className="btn-ghost"
+                style={{
+                  padding: '6px 12px',
+                  fontSize: 10,
+                  opacity: aiLoading ? 0.5 : 1,
+                }}
+              >
+                [ {a.label} ]
+              </button>
+            ))}
+          </div>
+
+          <div style={{ flex: 1, background: 'rgba(0,0,0,0.6)', border: '1px solid var(--border-subtle)', position: 'relative', overflow: 'hidden', padding: '16px' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'var(--border-subtle)' }} />
+            <pre className="mono" style={{
+              margin: 0,
+              fontSize: 11,
+              lineHeight: 1.6,
+              color: aiOutput ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+              textTransform: 'uppercase'
+            }}>
+              {aiLoading && !aiOutput ? '> INITIALIZING_NEURAL_LINK...\n' : ''}
+              {aiOutput || '> AWAITING_COMMAND.'}
+              {aiLoading && <span style={{ opacity: 0.5 }}>_</span>}
+            </pre>
           </div>
         </div>
       </div>

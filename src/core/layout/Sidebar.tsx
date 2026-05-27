@@ -15,7 +15,6 @@ const NAV_ITEMS = [
   { href: '/mocks',     label: 'Mock Lab',        icon: FlaskConical },
   { href: '/analytics', label: 'Analytics',      icon: BarChart3 },
   { href: '/revision',  label: 'Revision',        icon: BookOpen },
-  { href: '/ai',        label: 'Tactical AI',     icon: Brain },
   { href: '/settings',  label: 'Settings',        icon: Settings },
 ];
 
