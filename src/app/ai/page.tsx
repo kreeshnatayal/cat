@@ -67,98 +67,94 @@ USER STATUS:
   ];
 
   return (
-    <div className="page-container">
-      <div style={{ marginBottom: 32 }}>
-        <div className="section-label" style={{ marginBottom: 8 }}>INTELLIGENCE ENGINE</div>
-        <h1 style={{ fontSize: 28, fontWeight: 700, letterSpacing: '-0.03em', marginBottom: 8 }}>Tactical AI</h1>
-        <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
-          Running <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>gpt-oss-120b</span> via Groq. 
-          Reads your live data. No sugar-coating.
-        </p>
+    <div className="page-container" style={{ display: 'flex', flexDirection: 'column', gap: 48, height: '100%' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <div className="hud-text" style={{ marginBottom: 12 }}>INTELLIGENCE_ENGINE</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            TACTICAL_AI
+          </h1>
+          <p className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 16, textTransform: 'uppercase' }}>
+            RUNNING <span style={{ color: 'var(--accent-cyan)' }}>GPT-OSS-120B</span>. NO_SUGAR_COATING.
+          </p>
+        </div>
       </div>
 
       {/* Action Buttons */}
-      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 24 }}>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {actions.map(a => (
           <button
             key={a.label}
             onClick={() => run(a.prompt)}
             disabled={loading}
+            className="btn-ghost"
             style={{
-              background: 'var(--bg-elevated)',
-              border: '1px solid var(--border-default)',
-              color: 'var(--text-primary)',
-              padding: '8px 18px',
-              fontSize: 13,
-              fontWeight: 600,
-              borderRadius: 6,
+              padding: '10px 20px',
               cursor: loading ? 'not-allowed' : 'pointer',
               opacity: loading ? 0.5 : 1,
-              transition: 'border-color 0.15s, background 0.15s',
             }}
-            onMouseEnter={e => { (e.target as HTMLElement).style.borderColor = 'var(--accent-primary)'; }}
-            onMouseLeave={e => { (e.target as HTMLElement).style.borderColor = 'var(--border-default)'; }}
           >
-            {a.label}
+            [ {a.label.toUpperCase()} ]
           </button>
         ))}
       </div>
 
       {/* Output Terminal */}
-      <div style={{
-        background: 'var(--bg-elevated)',
-        border: '1px solid var(--border-default)',
-        borderRadius: 8,
+      <div className="cockpit-panel" style={{
         overflow: 'hidden',
-        minHeight: 300,
+        minHeight: 400,
+        display: 'flex',
+        flexDirection: 'column'
       }}>
         {/* Terminal chrome */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 6,
-          padding: '10px 16px',
+          display: 'flex', alignItems: 'center', gap: 12,
+          padding: '12px 24px',
+          background: 'rgba(0,0,0,0.6)',
           borderBottom: '1px solid var(--border-subtle)',
-          background: 'var(--bg-card)',
         }}>
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#3F3F46' }} />
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#3F3F46' }} />
-          <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#3F3F46' }} />
-          <span style={{ marginLeft: 8, fontFamily: 'monospace', fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-            {loading ? 'PROCESSING...' : 'cat-os / tactical-ai'}
+          <div style={{ display: 'flex', gap: 6 }}>
+            <div style={{ width: 10, height: 10, background: 'var(--accent-rose)', boxShadow: '0 0 10px var(--accent-rose)' }} />
+            <div style={{ width: 10, height: 10, background: 'var(--accent-amber)' }} />
+            <div style={{ width: 10, height: 10, background: 'var(--accent-green)' }} />
+          </div>
+          <span className="mono" style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.1em' }}>
+            {loading ? 'PROCESSING...' : 'ROOT@CAT-OS:/VAR/LOG/TACTICAL_AI'}
           </span>
         </div>
 
         {/* Output */}
-        <pre style={{
+        <pre className="mono" style={{
           padding: '24px',
           margin: 0,
-          fontFamily: 'monospace',
           fontSize: 13,
           lineHeight: 1.8,
-          color: output ? 'var(--text-primary)' : 'var(--text-muted)',
+          color: output ? 'var(--accent-cyan)' : 'var(--text-secondary)',
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-word',
-          minHeight: 250,
+          flex: 1,
+          textTransform: 'uppercase'
         }}>
-          {loading && !output ? '> Connecting to intelligence engine...\n' : ''}
-          {output || '> Select a command above to begin.'}
-          {loading && <span style={{ opacity: 0.5 }}>▌</span>}
+          {loading && !output ? '> CONNECTING_TO_INTELLIGENCE_ENGINE...\n' : ''}
+          {output || '> SELECT_A_COMMAND_ABOVE_TO_BEGIN.'}
+          {loading && <span style={{ opacity: 0.5 }}>_</span>}
         </pre>
       </div>
 
       {/* Context panel */}
-      <div style={{ marginTop: 24, padding: '16px 20px', background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 6 }}>
-        <div className="section-label" style={{ marginBottom: 12 }}>Context Being Sent to AI</div>
-        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+      <div className="cockpit-panel" style={{ padding: '32px' }}>
+        <div className="hud-text" style={{ marginBottom: 24, color: 'var(--accent-cyan)' }}>PAYLOAD_CONTEXT</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 32 }}>
           {[
-            ['Phase', phase.name],
-            ['Level', String(level.level)],
-            ['Streak', `${streak} days`],
-            ['Due Revisions', String(dueCount)],
-            ['Mocks Taken', String(mocks.length)],
+            ['PHASE', phase.name],
+            ['LEVEL', String(level.level)],
+            ['STREAK', `${streak} DAYS`],
+            ['DUE_REV', String(dueCount)],
+            ['MOCKS_LOGGED', String(mocks.length)],
           ].map(([k, v]) => (
             <div key={k}>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{k}</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{v}</div>
+              <div className="hud-text" style={{ marginBottom: 8, color: 'var(--text-secondary)' }}>{k}</div>
+              <div className="hud-value" style={{ fontSize: 20 }}>{v}</div>
             </div>
           ))}
         </div>

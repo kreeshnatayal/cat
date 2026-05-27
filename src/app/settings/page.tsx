@@ -43,11 +43,9 @@ export default function SettingsPage() {
       {/* ── Header ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            System Configuration
-          </div>
-          <h1 className="mono gradient-text" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, textTransform: 'uppercase' }}>
-            Settings
+          <div className="hud-text" style={{ marginBottom: 12 }}>SYSTEM_CONFIGURATION</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            SETTINGS
           </h1>
         </div>
       </div>
@@ -55,112 +53,102 @@ export default function SettingsPage() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 32, paddingBottom: 64 }}>
         
         {/* ── System Overview ── */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="surface-card" style={{ padding: '40px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--accent-primary)', opacity: 0.8 }} />
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="cockpit-panel" style={{ padding: '40px', borderTop: '2px solid var(--accent-cyan)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-            <div style={{ padding: 12, borderRadius: '50%', background: 'rgba(99, 153, 255, 0.1)', border: '1px solid rgba(99, 153, 255, 0.2)' }}>
-              <Database size={24} color="var(--accent-primary)" />
-            </div>
+            <Database size={24} color="var(--accent-cyan)" />
             <div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Storage Intelligence</div>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4, fontWeight: 500 }}>Local client-side persistence active</div>
+              <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>STORAGE_INTELLIGENCE</div>
+              <div className="hud-text" style={{ color: 'var(--text-secondary)', marginTop: 4 }}>LOCAL_CLIENT_PERSISTENCE_ACTIVE</div>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
             {[
-              { label: 'Execution Logs', value: plannerEntries.length, color: 'var(--accent-primary)' },
-              { label: 'Mock Intelligence', value: mocks.length, color: 'var(--accent-cyan)' },
-              { label: 'Concept Base', value: topics.length, color: 'var(--accent-green)' },
+              { label: 'EXECUTION_LOGS', value: plannerEntries.length, color: 'var(--accent-cyan)' },
+              { label: 'MOCK_INTELLIGENCE', value: mocks.length, color: 'var(--accent-cyan)' },
+              { label: 'CONCEPT_BASE', value: topics.length, color: 'var(--accent-green)' },
             ].map(({ label, value, color }) => (
-              <div key={label} style={{ padding: '24px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: color, opacity: 0.5 }} />
-                <div className="mono" style={{ fontSize: 36, fontWeight: 800, color, lineHeight: 1 }}>{value}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{label}</div>
+              <div key={label} style={{ padding: '24px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', borderLeft: `2px solid ${color}` }}>
+                <div className="hud-value" style={{ color }}>{value}</div>
+                <div className="hud-text" style={{ marginTop: 12, color: 'var(--text-secondary)' }}>{label}</div>
               </div>
             ))}
           </div>
         </motion.div>
 
         {/* ── Mission Parameters ── */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="surface-card" style={{ padding: '40px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--accent-green)', opacity: 0.8 }} />
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="cockpit-panel" style={{ padding: '40px', borderTop: '2px solid var(--accent-green)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-            <div style={{ padding: 12, borderRadius: '50%', background: 'rgba(52, 211, 153, 0.1)', border: '1px solid rgba(52, 211, 153, 0.2)' }}>
-              <Calendar size={24} color="var(--accent-green)" />
-            </div>
+            <Calendar size={24} color="var(--accent-green)" />
             <div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Mission Parameters</div>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4, fontWeight: 500 }}>Target definition and timeline</div>
+              <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>MISSION_PARAMETERS</div>
+              <div className="hud-text" style={{ color: 'var(--text-secondary)', marginTop: 4 }}>TARGET_DEFINITION_AND_TIMELINE</div>
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)' }}>
               <div>
-                <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.01em' }}>Zero Day (CAT Exam)</div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4, fontWeight: 500 }}>
+                <div className="mono" style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase' }}>ZERO_DAY (CAT_EXAM)</div>
+                <div className="hud-text" style={{ color: 'var(--text-muted)', marginTop: 8 }}>
                   {CAT_DATE.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
               </div>
-              <div style={{ padding: '8px 16px', borderRadius: 99, background: 'rgba(99, 153, 255, 0.1)', color: 'var(--accent-primary)', fontSize: 13, fontWeight: 700, border: '1px solid rgba(99, 153, 255, 0.2)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                T-Minus {Math.ceil((CAT_DATE.getTime() - Date.now()) / 86400000)} days
+              <div className="hud-text" style={{ padding: '8px 12px', background: 'rgba(0,255,102,0.1)', color: 'var(--accent-green)', border: '1px solid var(--accent-green)' }}>
+                T-MINUS {Math.ceil((CAT_DATE.getTime() - Date.now()) / 86400000)} DAYS
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)' }}>
               <div>
-                <div style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.01em' }}>Target Percentile</div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4, fontWeight: 500 }}>Minimum required for Tier 1</div>
+                <div className="mono" style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase' }}>TARGET_PERCENTILE</div>
+                <div className="hud-text" style={{ color: 'var(--text-muted)', marginTop: 8 }}>MINIMUM_REQUIRED_FOR_TIER_1</div>
               </div>
-              <div className="mono" style={{ fontSize: 24, fontWeight: 800, color: 'var(--accent-green)' }}>99.0+</div>
+              <div className="hud-value" style={{ color: 'var(--accent-green)' }}>99.0+</div>
             </div>
           </div>
         </motion.div>
 
         {/* ── Data Controls ── */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="surface-card" style={{ padding: '40px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--text-secondary)', opacity: 0.8 }} />
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="cockpit-panel" style={{ padding: '40px', borderTop: '2px solid var(--text-secondary)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
-            <div style={{ padding: 12, borderRadius: '50%', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
-              <Settings size={24} color="var(--text-secondary)" />
-            </div>
+            <Settings size={24} color="var(--text-secondary)" />
             <div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Data Operations</div>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4, fontWeight: 500 }}>Export or purge intelligence</div>
+              <div className="mono" style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>DATA_OPERATIONS</div>
+              <div className="hud-text" style={{ color: 'var(--text-secondary)', marginTop: 4 }}>EXPORT_OR_PURGE_INTELLIGENCE</div>
             </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)' }}>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>Backup Intelligence</div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4, fontWeight: 500 }}>Download secure JSON state</div>
+                <div className="mono" style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>BACKUP_INTELLIGENCE</div>
+                <div className="hud-text" style={{ color: 'var(--text-muted)', marginTop: 8 }}>DOWNLOAD_SECURE_JSON_STATE</div>
               </div>
-              <button className="btn-primary" onClick={handleExport} style={{ padding: '10px 20px', fontSize: 13 }}>
-                <Download size={16} /> Export Data
+              <button className="btn-primary" onClick={handleExport} style={{ padding: '10px 20px' }}>
+                <Download size={14} /> [ EXPORT_DATA ]
               </button>
             </div>
 
-            <div style={{ padding: '24px', borderRadius: 'var(--radius-lg)', background: 'rgba(251, 113, 133, 0.05)', border: '1px solid rgba(251, 113, 133, 0.2)' }}>
+            <div style={{ padding: '24px', background: 'rgba(255, 51, 102, 0.05)', border: '1px solid rgba(255, 51, 102, 0.4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: confirmClear ? 24 : 0 }}>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: 10, letterSpacing: '-0.01em' }}>
-                    <AlertTriangle size={18} strokeWidth={2.5} /> Purge Intelligence
+                  <div className="mono" style={{ fontSize: 14, fontWeight: 800, color: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: 10, textTransform: 'uppercase' }}>
+                    <AlertTriangle size={18} strokeWidth={2.5} /> PURGE_INTELLIGENCE
                   </div>
-                  <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 6, fontWeight: 500 }}>Irreversible deletion of all local storage. Cannot be undone.</div>
+                  <div className="hud-text" style={{ color: 'var(--text-secondary)', marginTop: 8 }}>IRREVERSIBLE_DELETION_OF_ALL_LOCAL_STORAGE. CANNOT_BE_UNDONE.</div>
                 </div>
                 {!confirmClear && (
-                  <button onClick={() => setConfirmClear(true)} style={{ padding: '10px 20px', borderRadius: 8, background: 'rgba(251, 113, 133, 0.1)', border: '1px solid rgba(251, 113, 133, 0.3)', color: 'var(--accent-rose)', cursor: 'pointer', fontSize: 13, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(251, 113, 133, 0.2)'; }} onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(251, 113, 133, 0.1)'; }}>
-                    <Trash2 size={16} /> Initiate Purge
+                  <button onClick={() => setConfirmClear(true)} className="btn-ghost" style={{ padding: '10px 20px', color: 'var(--accent-rose)', borderColor: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Trash2 size={14} /> [ INITIATE_PURGE ]
                   </button>
                 )}
               </div>
               {confirmClear && (
                 <div style={{ display: 'flex', gap: 16 }}>
-                  <button className="btn-ghost" onClick={() => setConfirmClear(false)} style={{ flex: 1, padding: '12px' }}>Abort Operation</button>
-                  <button onClick={handleClear} style={{ flex: 1, padding: '12px 24px', borderRadius: 8, background: 'var(--accent-rose)', color: 'var(--bg-base)', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, boxShadow: '0 0 20px rgba(251,113,133,0.4)', transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(251,113,133,0.6)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 0 20px rgba(251,113,133,0.4)'; }}>
-                    Confirm Absolute Purge
+                  <button className="btn-ghost" onClick={() => setConfirmClear(false)} style={{ flex: 1, padding: '12px' }}>[ ABORT_OPERATION ]</button>
+                  <button onClick={handleClear} style={{ flex: 1, padding: '12px 24px', background: 'var(--accent-rose)', color: 'var(--bg-base)', border: 'none', cursor: 'pointer', fontFamily: 'Geist Mono, monospace', fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', boxShadow: '0 0 20px rgba(255,51,102,0.4)', transition: 'all 0.2s', textTransform: 'uppercase' }}>
+                    [ CONFIRM_ABSOLUTE_PURGE ]
                   </button>
                 </div>
               )}

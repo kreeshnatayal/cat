@@ -49,25 +49,26 @@ function MockForm({ onClose }: { onClose: () => void }) {
     onClose();
   };
 
-  const inputStyle = { width: '100%', padding: '12px 16px', borderRadius: 'var(--radius-)', fontSize: 14, background: 'rgba(255,255,255,0.025)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', outline: 'none', transition: 'all 0.2s' };
-  const labelStyle = { fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' as const, letterSpacing: '0.06em', fontWeight: 700 };
+  const inputStyle = { width: '100%', padding: '12px 16px', fontSize: 13, fontFamily: 'Geist Mono, monospace', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', color: 'var(--accent-cyan)', outline: 'none', transition: 'all 0.2s' };
+  const labelStyle = { fontSize: 10, color: 'var(--text-secondary)', marginBottom: 8, display: 'block', textTransform: 'uppercase' as const, letterSpacing: '0.1em', fontFamily: 'Geist Mono, monospace' };
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(5, 5, 10, 0.85)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(5, 5, 10, 0.9)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <motion.div
-        initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} transition={{ duration: 0.3, ease: 'easeOut' }}
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)', padding: 40, width: '100%', maxWidth: 760, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px -16px rgba(0,0,0,0.8)' }}
+        initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="cockpit-panel"
+        style={{ padding: 40, width: '100%', maxWidth: 760, maxHeight: '90vh', overflowY: 'auto', border: '1px solid var(--accent-cyan)', boxShadow: '0 0 30px rgba(0,229,255,0.1)' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
           <div>
-            <div className="section-label" style={{ marginBottom: 8 }}>Mission Entry</div>
-            <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>Log Intelligence</div>
+            <div className="hud-text" style={{ marginBottom: 8, color: 'var(--accent-cyan)' }}>[ SYSTEM_INPUT ]</div>
+            <div className="mono" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>Log Intelligence</div>
           </div>
-          <button onClick={onClose} style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', padding: 8, transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-glass-hover)'; }} onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-glass)'; }}>
+          <button onClick={onClose} className="btn-ghost" style={{ padding: 8 }}>
             <X size={18} />
           </button>
         </div>
@@ -130,8 +131,8 @@ function MockForm({ onClose }: { onClose: () => void }) {
           </div>
 
           <div style={{ display: 'flex', gap: 16, justifyContent: 'flex-end', marginTop: 16 }}>
-            <button className="btn-ghost" onClick={onClose} style={{ padding: '12px 24px' }}>Cancel</button>
-            <button className="btn-primary" onClick={handleSave} style={{ padding: '12px 28px', fontSize: 14 }}>Log Mission Data</button>
+            <button className="btn-ghost" onClick={onClose} style={{ padding: '10px 24px' }}>[ CANCEL ]</button>
+            <button className="btn-primary" onClick={handleSave} style={{ padding: '10px 28px' }}>[ TRANSMIT_DATA ]</button>
           </div>
         </div>
       </motion.div>
@@ -171,15 +172,13 @@ export default function MocksPage() {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Performance Intelligence
-          </div>
-          <h1 className="mono gradient-text" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, textTransform: 'uppercase' }}>
-            Mock Lab
+          <div className="hud-text" style={{ marginBottom: 12 }}>RADAR_TELEMETRY</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            MOCK_LAB
           </h1>
         </div>
         <button className="btn-primary" onClick={() => setShowForm(true)} style={{ padding: '10px 20px' }}>
-          <Plus size={16} /> Log Intelligence
+          <Plus size={14} /> [ LOG_MISSION ]
         </button>
       </div>
 
@@ -193,24 +192,21 @@ export default function MocksPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
           
           {/* Top Hero: Percentile */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', padding: '48px 0', position: 'relative' }}>
-            <div className="spotlight-bg" style={{ position: 'absolute', inset: 0, zIndex: 0 }} />
-            <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ fontSize: 13, color: 'var(--accent-primary)', marginBottom: 24, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Latest Mission: {lastMock.name}</div>
-              <h1 className="mono" style={{ fontSize: 'clamp(80px, 12vw, 160px)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.06em', lineHeight: 1, textShadow: '0 0 60px rgba(255,255,255,0.08)' }}>
-                {lastMock.percentile}<span style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--text-muted)', marginLeft: 4 }}>%ile</span>
-              </h1>
-              
-              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 32, marginTop: 40 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-secondary)', fontSize: 14, fontWeight: 600 }}>
-                  <div style={{ padding: 6, background: 'rgba(52, 211, 153, 0.1)', borderRadius: '50%' }}><Target size={16} color="var(--accent-green)" /></div>
-                  Best: <span style={{ color: 'var(--text-primary)' }}>{bestPercentile}%ile</span>
-                </div>
-                <div style={{ width: 1, height: 24, background: 'var(--border-strong)' }} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-secondary)', fontSize: 14, fontWeight: 600 }}>
-                  <div style={{ padding: 6, background: 'rgba(99, 153, 255, 0.1)', borderRadius: '50%' }}><Brain size={16} color="var(--accent-primary)" /></div>
-                  Score: <span style={{ color: 'var(--text-primary)' }}>{lastMock.overallScore}</span>
-                </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', padding: '32px 0', borderBottom: '1px solid var(--border-subtle)', marginBottom: 16 }}>
+            <div className="hud-text" style={{ color: 'var(--accent-cyan)', marginBottom: 24 }}>LATEST_MISSION : {lastMock.name}</div>
+            <h1 className="hud-value" style={{ fontSize: 'clamp(80px, 12vw, 160px)', color: 'var(--accent-green)', textShadow: '0 0 40px rgba(0,255,102,0.2)' }}>
+              {lastMock.percentile}<span style={{ fontSize: 'clamp(32px, 4vw, 48px)', color: 'var(--text-secondary)', marginLeft: 8 }}>%ILE</span>
+            </h1>
+            
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 40, marginTop: 40 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <Target size={14} color="var(--accent-green)" />
+                <span className="hud-text">ALL-TIME_HIGH : <span style={{ color: 'var(--text-primary)' }}>{bestPercentile}%ILE</span></span>
+              </div>
+              <div style={{ width: 1, height: 24, background: 'var(--border-strong)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <Brain size={14} color="var(--accent-cyan)" />
+                <span className="hud-text">NET_SCORE : <span style={{ color: 'var(--text-primary)' }}>{lastMock.overallScore}</span></span>
               </div>
             </div>
           </motion.div>
@@ -230,27 +226,24 @@ export default function MocksPage() {
 
           {/* Mistake Clusters */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <div className="section-label" style={{ marginBottom: 24 }}>
-              Mistake Clusters (Lost Marks)
+            <div className="hud-text" style={{ marginBottom: 24 }}>
+              MISTAKE_CLUSTERS (MARKS LOST)
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
               {[
-                { label: 'Silly / Calc', value: aggMistakes.silly, icon: Brain, color: 'var(--accent-amber)', desc: 'Preventable unforced errors' },
-                { label: 'Panic', value: aggMistakes.panic, icon: AlertTriangle, color: 'var(--accent-rose)', desc: 'Stress-induced misreads' },
-                { label: 'Time Mgmt', value: aggMistakes.timing, icon: Clock, color: 'var(--accent-primary)', desc: 'Poor question selection' },
-                { label: 'Conceptual', value: aggMistakes.conceptual, icon: Target, color: 'var(--text-muted)', desc: 'Fundamental knowledge gaps' },
+                { label: 'SILLY / CALC', value: aggMistakes.silly, icon: Brain, color: 'var(--accent-amber)', desc: 'Preventable unforced errors' },
+                { label: 'PANIC', value: aggMistakes.panic, icon: AlertTriangle, color: 'var(--accent-rose)', desc: 'Stress-induced misreads' },
+                { label: 'TIME MGMT', value: aggMistakes.timing, icon: Clock, color: 'var(--accent-cyan)', desc: 'Poor question selection' },
+                { label: 'CONCEPTUAL', value: aggMistakes.conceptual, icon: Target, color: 'var(--text-secondary)', desc: 'Fundamental knowledge gaps' },
               ].map(({ label, value, icon: Icon, color, desc }) => (
-                <div key={label} className="surface-card" style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 20, position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: color, opacity: 0.8 }} />
+                <div key={label} className="cockpit-panel" style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 20, borderTop: `2px solid ${color}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ padding: 10, background: 'var(--bg-glass)', borderRadius: 10, border: `1px solid var(--border-subtle)` }}>
-                      <Icon size={20} color={color} />
-                    </div>
+                    <Icon size={16} color={color} />
                   </div>
                   <div>
-                    <div className="mono" style={{ fontSize: 40, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>{value || 0}</div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: color, marginTop: 12, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{label}</div>
-                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5, fontWeight: 500 }}>{desc}</div>
+                    <div className="hud-value" style={{ color: 'var(--text-primary)' }}>{value || 0}</div>
+                    <div className="hud-text" style={{ color: color, marginTop: 8 }}>{label}</div>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--text-secondary)', marginTop: 8, textTransform: 'uppercase' }}>{desc}</div>
                   </div>
                 </div>
               ))}
@@ -258,29 +251,29 @@ export default function MocksPage() {
           </motion.div>
 
           {/* Mistake Intelligence Layer */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="surface-card" style={{ padding: 36, marginTop: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32 }}>
-              <div style={{ width: 10, height: 10, background: 'var(--accent-primary)', borderRadius: '50%', boxShadow: '0 0 12px var(--accent-primary)' }} />
-              <div className="section-label">
-                Mistake Intelligence Layer
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="cockpit-panel" style={{ padding: 32, marginTop: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+              <div style={{ width: 8, height: 8, background: 'var(--accent-rose)', boxShadow: '0 0 10px var(--accent-rose)' }} />
+              <div className="hud-text">
+                MISTAKE_INTELLIGENCE_LAYER
               </div>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {(() => {
                 const insights = useMockStore.getState().getMistakeInsights();
-                if (insights.length === 0) return <div style={{ fontSize: 14, color: 'var(--text-muted)', fontWeight: 500 }}>Not enough data for behavioral clustering. Keep logging mistakes.</div>;
+                if (insights.length === 0) return <div className="mono" style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>INSUFFICIENT_DATA_FOR_CLUSTERING</div>;
                 
                 return insights.map((insight, idx) => (
                   <div key={idx} style={{ 
-                    display: 'flex', alignItems: 'center', gap: 20, padding: '20px 24px', 
-                    background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-)' 
+                    display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px', 
+                    background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', borderLeft: `2px solid ${insight.severity === 'High' ? 'var(--accent-rose)' : insight.severity === 'Medium' ? 'var(--accent-amber)' : 'var(--text-secondary)'}`
                   }}>
-                    {insight.severity === 'High' && <div style={{ padding: 8, background: 'rgba(251,113,133,0.1)', borderRadius: '50%' }}><AlertTriangle size={18} color="var(--accent-rose)" /></div>}
-                    {insight.severity === 'Medium' && <div style={{ padding: 8, background: 'rgba(251,191,36,0.1)', borderRadius: '50%' }}><Clock size={18} color="var(--accent-amber)" /></div>}
-                    {insight.severity === 'Low' && <div style={{ padding: 8, background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}><Brain size={18} color="var(--text-muted)" /></div>}
+                    {insight.severity === 'High' && <AlertTriangle size={14} color="var(--accent-rose)" />}
+                    {insight.severity === 'Medium' && <Clock size={14} color="var(--accent-amber)" />}
+                    {insight.severity === 'Low' && <Brain size={14} color="var(--text-secondary)" />}
                     
-                    <div style={{ flex: 1, fontSize: 14, color: insight.severity === 'High' ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.5 }}>
+                    <div className="mono" style={{ flex: 1, fontSize: 12, color: insight.severity === 'High' ? 'var(--text-primary)' : 'var(--text-secondary)', textTransform: 'uppercase' }}>
                       {insight.pattern}
                     </div>
                   </div>

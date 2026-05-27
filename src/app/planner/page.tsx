@@ -90,95 +90,50 @@ export default function PlannerPage() {
       ═══════════════════════════════════ */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 28, paddingBottom: 48 }}>
 
-        {/* ── Header ── */}
+        {/* ── Header (Pre-flight Status) ── */}
         <div>
-          {/* Top row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-            <span
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'var(--bg-base)',
-                background: 'var(--accent-primary)',
-                padding: '4px 10px',
-                borderRadius: 99,
-              }}
-            >
-              {theme.type} Energy
-            </span>
-            <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>
-              {format(dateObj, 'EEEE, MMMM d')}
-            </span>
-            <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 'auto' }}>
-              Phase {phase.id} · {phase.name}
-            </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+            <span className="badge badge-active">{theme.type} ENERGY</span>
+            <span className="hud-text">{format(dateObj, 'EEEE, MMMM d')}</span>
+            <span className="hud-text" style={{ marginLeft: 'auto' }}>PHASE {phase.id} · {phase.name}</span>
           </div>
 
-          {/* Title row */}
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16 }}>
-            <h1
-              className="mono"
-              style={{
-                fontSize: 'clamp(26px, 3.5vw, 40px)',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.04em',
-                lineHeight: 1.1,
-                textTransform: 'uppercase',
-              }}
-            >
-              {theme.name}<br />
-              <span style={{ color: 'var(--accent-primary)' }}>{theme.focus}</span>
-            </h1>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, borderBottom: '1px solid var(--border-subtle)', paddingBottom: 24, marginBottom: 8 }}>
+            <div>
+              <div className="hud-text" style={{ marginBottom: 8, color: 'var(--text-secondary)' }}>MISSION FOCUS</div>
+              <h1 className="hud-value" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
+                {theme.name}<br />
+                <span style={{ color: 'var(--accent-cyan)' }}>{theme.focus}</span>
+              </h1>
+            </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
-              {/* Focus button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexShrink: 0 }}>
               <button
                 onClick={() => setIsFocusMode(true)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 7,
-                  background: 'var(--accent-primary-muted)',
-                  border: '1px solid var(--accent-primary)',
-                  color: 'var(--accent-primary)',
-                  padding: '9px 18px',
-                  borderRadius: 99,
-                  fontSize: 12,
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  boxShadow: '0 0 20px var(--accent-primary-glow)',
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(99,153,255,0.2)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = 'var(--accent-primary-muted)'; }}
+                className="btn-primary"
+                style={{ padding: '12px 24px', fontSize: 13, boxShadow: '0 0 20px rgba(0,229,255,0.2)' }}
               >
-                <Crosshair size={13} /> Focus
+                <Crosshair size={16} /> [ ENGAGE_BATTLE_HUD ]
               </button>
 
-              {/* Progress ring */}
-              <div style={{ position: 'relative', width: 88, height: 88, flexShrink: 0 }}>
-                <svg width="88" height="88" style={{ transform: 'rotate(-90deg)' }}>
-                  <circle cx="44" cy="44" r="40" fill="none" stroke="var(--border-subtle)" strokeWidth="4" />
+              <div style={{ position: 'relative', width: 80, height: 80, flexShrink: 0 }}>
+                <svg width="80" height="80" style={{ transform: 'rotate(-90deg)' }}>
+                  <circle cx="40" cy="40" r="36" fill="none" stroke="var(--border-subtle)" strokeWidth="4" strokeDasharray="2 4" />
                   <circle
-                    cx="44" cy="44" r="40" fill="none"
-                    stroke={mvdMet ? 'var(--accent-green)' : 'var(--accent-primary)'}
+                    cx="40" cy="40" r="36" fill="none"
+                    stroke={mvdMet ? 'var(--accent-green)' : 'var(--accent-cyan)'}
                     strokeWidth="4"
                     strokeDasharray={`${circumference * (completionPercent / 100)} ${circumference}`}
-                    strokeLinecap="round"
-                    style={{ transition: 'stroke-dasharray 0.6s cubic-bezier(0.4,0,0.2,1), stroke 0.3s ease' }}
+                    strokeLinecap="butt"
+                    style={{ transition: 'stroke-dasharray 0.6s cubic-bezier(0.4,0,0.2,1)' }}
                   />
                 </svg>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <span className="mono" style={{ fontSize: 17, fontWeight: 700, color: mvdMet ? 'var(--accent-green)' : 'var(--text-primary)', lineHeight: 1 }}>
+                  <span className="mono" style={{ fontSize: 16, fontWeight: 700, color: mvdMet ? 'var(--accent-green)' : 'var(--text-primary)', lineHeight: 1 }}>
                     {completionPercent}%
                   </span>
-                  <span style={{ fontSize: 9, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: 3, fontWeight: 600 }}>
-                    {mvdMet ? 'Done ✓' : 'MVD'}
+                  <span className="hud-text" style={{ marginTop: 4 }}>
+                    {mvdMet ? 'MVD_OK' : 'MVD_REQ'}
                   </span>
                 </div>
               </div>
@@ -188,9 +143,9 @@ export default function PlannerPage() {
 
         {/* ── Morning Block ── */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
             <Sun size={14} color="var(--accent-amber)" />
-            <span className="section-label">Morning · High Cognitive Load</span>
+            <span className="hud-text">MORNING_BLOCK · HI-COG LOAD</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <TaskCard
@@ -216,9 +171,9 @@ export default function PlannerPage() {
 
         {/* ── Evening Block ── */}
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <Moon size={14} color="var(--accent-purple)" />
-            <span className="section-label">Evening · Consolidation</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+            <Moon size={14} color="var(--accent-rose)" />
+            <span className="hud-text">EVENING_BLOCK · CONSOLIDATION</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <TaskCard
@@ -248,19 +203,20 @@ export default function PlannerPage() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 48, paddingTop: 4 }}>
 
         {/* ── AI/PM Limiter ── */}
-        <div className="surface-card" style={{ padding: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
             <Zap size={14} color="var(--accent-amber)" />
-            <span className="section-label">AI / PM Limiter</span>
+            <span className="hud-text">AI/PM WORK LIMITER</span>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Work Hours Today</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <span className="hud-text" style={{ color: 'var(--text-secondary)' }}>HRS TODAY</span>
             <span
               className="mono"
               style={{
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: 700,
                 color: form.pmHours > (dayOfWeek === 0 || dayOfWeek === 6 ? 3 : 1) ? 'var(--accent-rose)' : 'var(--accent-green)',
+                textShadow: form.pmHours > (dayOfWeek === 0 || dayOfWeek === 6 ? 3 : 1) ? '0 0 10px rgba(255,51,102,0.4)' : 'none'
               }}
             >
               {form.pmHours}h
@@ -270,20 +226,20 @@ export default function PlannerPage() {
             type="range" min="0" max="8" step="0.5"
             value={form.pmHours}
             onChange={(e) => setForm(f => ({ ...f, pmHours: Number(e.target.value) }))}
-            style={{ width: '100%', accentColor: 'var(--accent-primary)' }}
+            style={{ width: '100%', accentColor: 'var(--accent-cyan)' }}
           />
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 10, lineHeight: 1.6 }}>
-            Cap: {dayOfWeek === 0 || dayOfWeek === 6 ? '3h weekends' : '1h weekdays'} · Protect deep work.
+          <div className="hud-text" style={{ color: 'var(--text-tertiary)', marginTop: 12 }}>
+            CAP: {dayOfWeek === 0 || dayOfWeek === 6 ? '3H WEEKEND' : '1H WEEKDAY'}
           </div>
         </div>
 
         {/* ── Mental State ── */}
-        <div className="surface-card" style={{ padding: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <Activity size={14} color="var(--accent-primary)" />
-            <span className="section-label">Mental State</span>
+        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+            <Activity size={14} color="var(--accent-cyan)" />
+            <span className="hud-text">MENTAL STATE TELEMETRY</span>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {MENTAL_STATES.map(({ state, color, emoji }) => {
               const selected = form.mentalState === state;
               return (
@@ -291,16 +247,15 @@ export default function PlannerPage() {
                   key={state}
                   onClick={() => setForm(f => ({ ...f, mentalState: state }))}
                   style={{
-                    padding: '6px 12px',
-                    borderRadius: 99,
-                    fontSize: 12,
-                    fontWeight: 600,
+                    padding: '8px 12px',
+                    fontFamily: 'Geist Mono, monospace',
+                    fontSize: 11,
+                    textTransform: 'uppercase',
                     cursor: 'pointer',
-                    transition: 'all 0.18s ease',
-                    background: selected ? `${color}20` : 'var(--bg-glass)',
-                    color: selected ? color : 'var(--text-muted)',
-                    border: selected ? `1px solid ${color}50` : '1px solid var(--border-subtle)',
-                    boxShadow: selected ? `0 0 12px ${color}25` : 'none',
+                    background: selected ? `rgba(${color === 'var(--accent-primary)' ? '0,229,255' : '255,255,255'}, 0.1)` : 'var(--bg-surface)',
+                    color: selected ? color : 'var(--text-secondary)',
+                    border: selected ? `1px solid ${color}` : '1px solid var(--border-default)',
+                    boxShadow: selected ? `inset 0 0 10px ${color}` : 'none',
                   }}
                 >
                   {emoji} {state}
@@ -311,48 +266,44 @@ export default function PlannerPage() {
         </div>
 
         {/* ── Operator Journal ── */}
-        <div className="surface-card" style={{ padding: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-            <Brain size={14} color="var(--accent-purple)" />
-            <span className="section-label">Operator Journal</span>
+        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+            <Brain size={14} color="var(--accent-rose)" />
+            <span className="hud-text">OPERATOR JOURNAL (DEBRIEF)</span>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--accent-rose)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6 }}>
-                Friction Source
+              <div className="hud-text" style={{ color: 'var(--accent-rose)', marginBottom: 8 }}>
+                [!] FRICTION_SOURCE
               </div>
               <input
                 type="text"
                 value={form.frictionSource}
                 onChange={(e) => setForm(f => ({ ...f, frictionSource: e.target.value }))}
-                placeholder="What slowed you down?"
-                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13 }}
-                onFocus={(e) => { e.target.style.borderColor = 'var(--accent-rose) !important'; }}
-                onBlur={(e) => { e.target.style.borderColor = ''; }}
+                placeholder="Root cause of slowdown..."
               />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--accent-green)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6 }}>
-                Momentum Source
+              <div className="hud-text" style={{ color: 'var(--accent-green)', marginBottom: 8 }}>
+                [*] MOMENTUM_SOURCE
               </div>
               <input
                 type="text"
                 value={form.momentumSource}
                 onChange={(e) => setForm(f => ({ ...f, momentumSource: e.target.value }))}
-                placeholder="What accelerated you?"
-                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13 }}
+                placeholder="What accelerated operations?"
               />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 6 }}>
-                Debrief
+              <div className="hud-text" style={{ color: 'var(--text-secondary)', marginBottom: 8 }}>
+                TACTICAL_NOTES
               </div>
               <textarea
                 value={form.notes}
                 onChange={(e) => setForm(f => ({ ...f, notes: e.target.value }))}
-                placeholder="What needs fixing tomorrow?"
+                placeholder="System adjustments for next cycle..."
                 rows={3}
-                style={{ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, lineHeight: 1.6, resize: 'none' }}
+                style={{ resize: 'none' }}
               />
             </div>
           </div>
@@ -383,43 +334,31 @@ export default function PlannerPage() {
                 padding: '40px 60px',
               }}
             >
+              {/* Battle HUD Overlay */}
+              <div className="scan-line" />
+              <div style={{ position: 'absolute', top: 40, left: 40, width: 20, height: 20, borderTop: '2px solid var(--accent-cyan)', borderLeft: '2px solid var(--accent-cyan)' }} />
+              <div style={{ position: 'absolute', top: 40, right: 40, width: 20, height: 20, borderTop: '2px solid var(--accent-cyan)', borderRight: '2px solid var(--accent-cyan)' }} />
+              <div style={{ position: 'absolute', bottom: 40, left: 40, width: 20, height: 20, borderBottom: '2px solid var(--accent-cyan)', borderLeft: '2px solid var(--accent-cyan)' }} />
+              <div style={{ position: 'absolute', bottom: 40, right: 40, width: 20, height: 20, borderBottom: '2px solid var(--accent-cyan)', borderRight: '2px solid var(--accent-cyan)' }} />
+
               {/* Exit button */}
               <button
                 onClick={() => setIsFocusMode(false)}
-                style={{
-                  position: 'absolute',
-                  top: 32,
-                  right: 36,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid var(--border-subtle)',
-                  color: 'var(--text-muted)',
-                  padding: '7px 14px',
-                  borderRadius: 99,
-                  fontSize: 12,
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  cursor: 'pointer',
-                  textTransform: 'uppercase',
-                  transition: 'all 0.2s',
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.borderColor = 'var(--border-default)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+                className="btn-ghost"
+                style={{ position: 'absolute', top: 32, right: 36, zIndex: 10 }}
               >
-                <X size={13} /> Exit · Esc
+                <X size={13} /> [ ESC_TO_ABORT ]
               </button>
 
               {/* Label */}
-              <div style={{ fontSize: 11, color: 'var(--accent-primary)', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 700, marginBottom: 20 }}>
-                Mission Control · {format(dateObj, 'MMMM d')}
+              <div className="hud-text" style={{ color: 'var(--accent-cyan)', textShadow: '0 0 10px rgba(0,229,255,0.4)', marginBottom: 24 }}>
+                BATTLE_HUD_ACTIVE · {format(dateObj, 'MMMM d')}
               </div>
 
               {/* Big title */}
               <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1, duration: 0.4 }}
                 className="mono"
                 style={{
@@ -431,13 +370,14 @@ export default function PlannerPage() {
                   marginBottom: 16,
                   textTransform: 'uppercase',
                   textAlign: 'center',
+                  textShadow: '0 0 30px rgba(255,255,255,0.1)'
                 }}
               >
                 {theme.focus}
               </motion.h1>
 
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 56, textAlign: 'center' }}>
-                Phase {phase.id} · {phase.name}
+              <div className="hud-text" style={{ color: 'var(--text-secondary)', marginBottom: 56, textAlign: 'center' }}>
+                PHASE {phase.id} · {phase.name}
               </div>
 
               {/* Cards */}
@@ -445,51 +385,43 @@ export default function PlannerPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
-                style={{ display: 'flex', gap: 20, width: '100%', maxWidth: 860 }}
+                style={{ display: 'flex', gap: 24, width: '100%', maxWidth: 900 }}
               >
                 {[
-                  { title: 'Quant', subtitle: dailyTopics.qa, color: SECTION_COLORS.QA, key: 'qaSolved' as const, unit: 'Qs', target: theme.targets.qa },
-                  { title: 'DILR', subtitle: dailyTopics.dilr, color: SECTION_COLORS.DILR, key: 'dilrSolved' as const, unit: 'Sets', target: theme.targets.dilr },
-                  { title: 'VARC', subtitle: dailyTopics.varc, color: SECTION_COLORS.VARC, key: 'rcsRead' as const, unit: 'RCs', target: theme.targets.varc },
+                  { title: 'QUANT_OPS', subtitle: dailyTopics.qa, color: SECTION_COLORS.QA, key: 'qaSolved' as const, unit: 'QS', target: theme.targets.qa },
+                  { title: 'DILR_OPS', subtitle: dailyTopics.dilr, color: SECTION_COLORS.DILR, key: 'dilrSolved' as const, unit: 'SETS', target: theme.targets.dilr },
+                  { title: 'VARC_OPS', subtitle: dailyTopics.varc, color: SECTION_COLORS.VARC, key: 'rcsRead' as const, unit: 'RCS', target: theme.targets.varc },
                 ].map(({ title, subtitle, color, key, unit, target }) => (
-                  <div key={key} style={{ flex: 1 }}>
-                    <div style={{
-                      background: 'rgba(255,255,255,0.025)',
-                      border: `1px solid ${color}30`,
-                      borderRadius: 14,
-                      padding: '20px 20px 16px',
-                      textAlign: 'center',
-                    }}>
-                      <div style={{ fontSize: 11, color, textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, marginBottom: 4 }}>{title}</div>
-                      <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 16 }}>{subtitle}</div>
-                      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 4 }}>
-                        <input
-                          type="number"
-                          value={form[key] || ''}
-                          onChange={(e) => setForm(f => ({ ...f, [key]: e.target.value }))}
-                          placeholder="0"
-                          className="mono"
-                          min={0}
-                          style={{
-                            width: 80,
-                            background: 'transparent !important' as any,
-                            border: 'none !important' as any,
-                            borderBottom: `2px solid ${color}60 !important` as any,
-                            color,
-                            fontSize: 36,
-                            fontWeight: 700,
-                            textAlign: 'center',
-                            outline: 'none',
-                            borderRadius: '0 !important' as any,
-                            boxShadow: 'none !important' as any,
-                          }}
-                        />
-                        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600 }}>{unit}</span>
-                      </div>
-                      {target > 0 && (
-                        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 10 }}>Target: {target}</div>
-                      )}
+                  <div key={key} className="cockpit-panel" style={{ flex: 1, padding: '24px 20px', textAlign: 'center' }}>
+                    <div className="hud-text" style={{ color, textShadow: `0 0 10px ${color}`, marginBottom: 8 }}>{title}</div>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--text-secondary)', marginBottom: 24, textTransform: 'uppercase' }}>{subtitle}</div>
+                    <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8 }}>
+                      <input
+                        type="number"
+                        value={form[key] || ''}
+                        onChange={(e) => setForm(f => ({ ...f, [key]: e.target.value }))}
+                        placeholder="0"
+                        className="mono"
+                        min={0}
+                        style={{
+                          width: 80,
+                          background: 'transparent',
+                          border: 'none',
+                          borderBottom: `2px solid ${color}`,
+                          color,
+                          fontSize: 48,
+                          fontWeight: 700,
+                          textAlign: 'center',
+                          outline: 'none',
+                          padding: 0,
+                          textShadow: `0 0 20px ${color}`
+                        }}
+                      />
+                      <span className="hud-text" style={{ color: 'var(--text-muted)' }}>{unit}</span>
                     </div>
+                    {target > 0 && (
+                      <div className="hud-text" style={{ color: 'var(--text-secondary)', marginTop: 16 }}>TARGET: {target}</div>
+                    )}
                   </div>
                 ))}
               </motion.div>
@@ -499,20 +431,20 @@ export default function PlannerPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.35 }}
-                style={{ marginTop: 40, width: '100%', maxWidth: 860 }}
+                style={{ marginTop: 64, width: '100%', maxWidth: 900 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>MVD Progress</span>
-                  <span className="mono" style={{ fontSize: 11, color: mvdMet ? 'var(--accent-green)' : 'var(--text-muted)' }}>
-                    {completionPercent}% {mvdMet && '· Achieved ✓'}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <span className="hud-text">MVD_PROGRESS_METER</span>
+                  <span className="hud-text" style={{ color: mvdMet ? 'var(--accent-green)' : 'var(--text-secondary)' }}>
+                    {completionPercent}% {mvdMet && '· SECURED'}
                   </span>
                 </div>
-                <div style={{ height: 3, background: 'var(--border-subtle)', borderRadius: 99, overflow: 'hidden' }}>
+                <div style={{ height: 4, background: 'var(--border-dim)', overflow: 'hidden' }}>
                   <motion.div
                     style={{
                       height: '100%',
-                      background: mvdMet ? 'var(--accent-green)' : 'var(--accent-primary)',
-                      borderRadius: 99,
+                      background: mvdMet ? 'var(--accent-green)' : 'var(--accent-cyan)',
+                      boxShadow: mvdMet ? '0 0 10px var(--accent-green)' : '0 0 10px var(--accent-cyan)'
                     }}
                     initial={{ width: 0 }}
                     animate={{ width: `${completionPercent}%` }}

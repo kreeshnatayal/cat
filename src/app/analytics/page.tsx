@@ -15,12 +15,12 @@ import {
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: { name: string; value: number; color: string }[]; label?: string }) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-default)', borderRadius: 'var(--radius-)', padding: '12px 16px', fontSize: 13, boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
-      <div style={{ color: 'var(--text-muted)', marginBottom: 8, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: 11 }}>{label}</div>
+    <div className="cockpit-panel" style={{ padding: '12px 16px', fontSize: 11, border: '1px solid var(--accent-cyan)' }}>
+      <div className="hud-text" style={{ color: 'var(--text-secondary)', marginBottom: 8 }}>[ {label} ]</div>
       {payload.map((p) => (
-        <div key={p.name} style={{ color: p.color ?? 'var(--text-primary)', display: 'flex', gap: 12, justifyContent: 'space-between', marginBottom: 4 }}>
-          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{p.name}</span>
-          <span className="mono" style={{ fontWeight: 700 }}>{p.value}</span>
+        <div key={p.name} style={{ color: p.color ?? 'var(--text-primary)', display: 'flex', gap: 16, justifyContent: 'space-between', marginBottom: 4 }}>
+          <span className="mono" style={{ textTransform: 'uppercase' }}>{p.name}</span>
+          <span className="hud-value" style={{ fontSize: 14 }}>{p.value}</span>
         </div>
       ))}
     </div>
@@ -99,11 +99,11 @@ export default function AnalyticsPage() {
   };
 
   const statsRow = [
-    { label: 'Total MVDs', value: mvdCount, color: 'var(--accent-primary)' },
-    { label: 'Mocks Taken', value: mocks.length, color: 'var(--accent-cyan)' },
-    { label: 'Best Percentile', value: `${bestPercentile}%ile`, color: 'var(--accent-green)' },
-    { label: 'Current Streak', value: `${streak}d`, color: 'var(--accent-amber)' },
-    { label: 'Longest Streak', value: `${longestStreak}d`, color: 'var(--accent-rose)' },
+    { label: 'TOTAL_MVDS', value: mvdCount, color: 'var(--accent-cyan)' },
+    { label: 'MOCKS_LOGGED', value: mocks.length, color: 'var(--accent-cyan)' },
+    { label: 'ALL-TIME_HIGH', value: `${bestPercentile}%ILE`, color: 'var(--accent-green)' },
+    { label: 'CURRENT_STREAK', value: `${streak}D`, color: 'var(--accent-amber)' },
+    { label: 'MAX_STREAK', value: `${longestStreak}D`, color: 'var(--accent-rose)' },
   ];
 
   return (
@@ -112,11 +112,9 @@ export default function AnalyticsPage() {
       {/* ── Header ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            System Analytics
-          </div>
-          <h1 className="mono gradient-text" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, textTransform: 'uppercase' }}>
-            Data Intelligence
+          <div className="hud-text" style={{ marginBottom: 12 }}>SYSTEM_ANALYTICS</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            DATA_INTELLIGENCE
           </h1>
         </div>
       </div>
@@ -124,48 +122,47 @@ export default function AnalyticsPage() {
       {/* ── Stats Summary ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 20 }}>
         {statsRow.map((s, i) => (
-          <motion.div key={s.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="surface-card" style={{ padding: '24px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: s.color, opacity: 0.5 }} />
-            <div className="mono" style={{ fontSize: 36, fontWeight: 700, color: s.color, lineHeight: 1, letterSpacing: '-0.03em' }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{s.label}</div>
+          <motion.div key={s.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="cockpit-panel" style={{ padding: '24px', borderTop: `2px solid ${s.color}` }}>
+            <div className="hud-value" style={{ color: s.color }}>{s.value}</div>
+            <div className="hud-text" style={{ marginTop: 12, color: 'var(--text-secondary)' }}>{s.label}</div>
           </motion.div>
         ))}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24 }}>
         {/* ── MVD Percent Area Chart ── */}
-        <motion.div className="surface-card" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <div className="section-label" style={{ marginBottom: 32 }}>MVD Fulfillment (30D)</div>
+        <motion.div className="cockpit-panel" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <div className="hud-text" style={{ marginBottom: 32 }}>MVD_FULFILLMENT_30D</div>
           <div style={{ flex: 1, minHeight: 280 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={last30Days} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                 <defs>
                   <linearGradient id="grad30" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--accent-primary)" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="var(--accent-primary)" stopOpacity={0} />
+                    <stop offset="0%" stopColor="var(--accent-cyan)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="var(--accent-cyan)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="4 4" stroke="var(--border-subtle)" vertical={false} />
-                <XAxis dataKey="date" tick={{ fontSize: 11, fill: 'var(--text-muted)', fontWeight: 500 }} tickLine={false} axisLine={false} interval="preserveStartEnd" minTickGap={30} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 11, fill: 'var(--text-muted)', fontWeight: 500 }} tickLine={false} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--border-strong)', strokeDasharray: '4 4' }} />
-                <Area type="monotone" dataKey="percent" stroke="var(--accent-primary)" strokeWidth={3} fill="url(#grad30)" name="Fulfillment %" activeDot={{ r: 6, fill: 'var(--accent-primary)', stroke: 'var(--bg-base)', strokeWidth: 2 }} />
+                <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,229,255,0.1)" vertical={false} />
+                <XAxis dataKey="date" tick={{ fontSize: 10, fill: 'var(--text-secondary)', fontFamily: 'Geist Mono, monospace', textAnchor: 'middle' }} tickLine={false} axisLine={false} interval="preserveStartEnd" minTickGap={30} />
+                <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: 'var(--text-secondary)', fontFamily: 'Geist Mono, monospace' }} tickLine={false} axisLine={false} />
+                <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'var(--accent-cyan)', strokeDasharray: '4 4' }} />
+                <Area type="monotone" dataKey="percent" stroke="var(--accent-cyan)" strokeWidth={2} fill="url(#grad30)" name="FULFILLMENT_PCT" activeDot={{ r: 4, fill: 'var(--bg-base)', stroke: 'var(--accent-cyan)', strokeWidth: 2 }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
 
         {/* ── Weekly MVDs ── */}
-        <motion.div className="surface-card" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <div className="section-label" style={{ marginBottom: 32 }}>Weekly MVD Consistency</div>
+        <motion.div className="cockpit-panel" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <div className="hud-text" style={{ marginBottom: 32 }}>WEEKLY_MVD_CONSISTENCY</div>
           <div style={{ flex: 1, minHeight: 280 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weeklyData} margin={{ top: 0, right: 0, left: -30, bottom: 0 }} barSize={32}>
-                <CartesianGrid strokeDasharray="4 4" stroke="var(--border-subtle)" vertical={false} />
-                <XAxis dataKey="week" tick={{ fontSize: 11, fill: 'var(--text-muted)', fontWeight: 500 }} tickLine={false} axisLine={false} />
-                <YAxis domain={[0, 7]} tick={{ fontSize: 11, fill: 'var(--text-muted)', fontWeight: 500 }} tickLine={false} axisLine={false} />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'var(--bg-glass)' }} />
-                <Bar dataKey="mvds" fill="var(--accent-green)" radius={[4, 4, 0, 0]} name="MVDs Achieved" />
+              <BarChart data={weeklyData} margin={{ top: 0, right: 0, left: -30, bottom: 0 }} barSize={16}>
+                <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,255,102,0.1)" vertical={false} />
+                <XAxis dataKey="week" tick={{ fontSize: 10, fill: 'var(--text-secondary)', fontFamily: 'Geist Mono, monospace' }} tickLine={false} axisLine={false} />
+                <YAxis domain={[0, 7]} tick={{ fontSize: 10, fill: 'var(--text-secondary)', fontFamily: 'Geist Mono, monospace' }} tickLine={false} axisLine={false} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,255,102,0.1)' }} />
+                <Bar dataKey="mvds" fill="var(--accent-green)" name="MVDS_ACHIEVED" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -174,31 +171,31 @@ export default function AnalyticsPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24 }}>
         {/* ── Section Radar ── */}
-        <motion.div className="surface-card" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <div className="section-label" style={{ marginBottom: 16 }}>Section Radar</div>
+        <motion.div className="cockpit-panel" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <div className="hud-text" style={{ marginBottom: 16 }}>SECTION_RADAR</div>
           {mocks.length > 0 ? (
             <div style={{ flex: 1, minHeight: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={sectionRadar} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-                  <PolarGrid stroke="var(--border-subtle)" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12, fill: 'var(--text-secondary)', fontWeight: 600, letterSpacing: '0.05em' }} />
-                  <Radar name="Avg Score" dataKey="Avg Score" stroke="var(--accent-primary)" fill="var(--accent-primary)" fillOpacity={0.25} strokeWidth={2} />
-                  <Radar name="Accuracy %" dataKey="Accuracy %" stroke="var(--accent-cyan)" fill="var(--accent-cyan)" fillOpacity={0.15} strokeWidth={2} />
+                  <PolarGrid stroke="rgba(0,229,255,0.2)" />
+                  <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: 'var(--text-secondary)', fontFamily: 'Geist Mono, monospace' }} />
+                  <Radar name="AVG_SCORE" dataKey="Avg Score" stroke="var(--accent-cyan)" fill="var(--accent-cyan)" fillOpacity={0.1} strokeWidth={1.5} />
+                  <Radar name="ACCURACY_PCT" dataKey="Accuracy %" stroke="var(--accent-amber)" fill="var(--accent-amber)" fillOpacity={0.1} strokeWidth={1.5} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend wrapperStyle={{ fontSize: 12, fontWeight: 500, paddingTop: 20 }} />
+                  <Legend wrapperStyle={{ fontSize: 10, fontFamily: 'Geist Mono, monospace', color: 'var(--text-secondary)', paddingTop: 20 }} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <div style={{ flex: 1, minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: 14, fontWeight: 500 }}>
-              No intelligence logged
+            <div className="mono" style={{ flex: 1, minHeight: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-tertiary)', fontSize: 12, textTransform: 'uppercase' }}>
+              [ NO_INTELLIGENCE_LOGGED ]
             </div>
           )}
         </motion.div>
 
         {/* ── Consistency Heatmap ── */}
-        <motion.div className="surface-card" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <div className="section-label" style={{ marginBottom: 32 }}>MVD Heatmap</div>
+        <motion.div className="cockpit-panel" style={{ padding: '32px 32px 24px', display: 'flex', flexDirection: 'column' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+          <div className="hud-text" style={{ marginBottom: 32 }}>MVD_HEATMAP</div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 24 }}>
               {weeks.map((week, wi) => (
@@ -249,15 +246,15 @@ export default function AnalyticsPage() {
       </div>
 
       {/* ── Shadow Analytics Engine ── */}
-      <motion.div className="surface-card spotlight-bg" style={{ padding: '48px', border: '1px solid rgba(251,113,133,0.3)', position: 'relative', overflow: 'hidden' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(251,113,133,0.05) 0%, transparent 60%)', pointerEvents: 'none' }} />
+      <motion.div className="cockpit-panel" style={{ padding: '48px', border: '1px solid rgba(255,51,102,0.4)', position: 'relative', overflow: 'hidden' }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(255,51,102,0.05) 0%, transparent 60%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 10, height: 10, background: 'var(--accent-rose)', borderRadius: '50%', boxShadow: '0 0 16px var(--accent-rose)' }} />
-            <h2 className="mono" style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', margin: 0, color: 'var(--text-primary)' }}>The Shadow System</h2>
+            <div style={{ width: 8, height: 8, background: 'var(--accent-rose)', boxShadow: '0 0 16px var(--accent-rose)' }} />
+            <h2 className="mono" style={{ fontSize: 24, fontWeight: 700, textTransform: 'uppercase', margin: 0, color: 'var(--accent-rose)' }}>SHADOW_SYSTEM</h2>
           </div>
-          <div style={{ fontSize: 14, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 680, lineHeight: 1.6, fontWeight: 500 }}>
-            This system passively tracks behavioral avoidance, friction loops, and procrastination masking as "work". Elite performance requires absolute truth.
+          <div className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 680, lineHeight: 1.6, textTransform: 'uppercase' }}>
+            THIS_SYSTEM_PASSIVELY_TRACKS_BEHAVIORAL_AVOIDANCE_AND_FRICTION_LOOPS. TRUTH_IS_MANDATORY.
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 32 }}>
@@ -273,32 +270,32 @@ export default function AnalyticsPage() {
               return (
                 <>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    <div className="section-label">Mock Avoidance</div>
-                    <div className="mono" style={{ fontSize: 36, fontWeight: 700, color: daysSinceMock > 14 ? 'var(--accent-rose)' : 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-                      {daysSinceMock === 999 ? 'No Mocks' : `${daysSinceMock} Days`}
+                    <div className="hud-text">MOCK_AVOIDANCE</div>
+                    <div className="hud-value" style={{ color: daysSinceMock > 14 ? 'var(--accent-rose)' : 'var(--text-primary)' }}>
+                      {daysSinceMock === 999 ? 'NO_MOCKS' : `${daysSinceMock} DAYS`}
                     </div>
-                    <div style={{ fontSize: 13, color: daysSinceMock > 14 ? 'var(--accent-rose)' : 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.5 }}>
-                      {daysSinceMock > 14 ? 'High risk. You are avoiding reality.' : 'Acceptable range. Keep pushing.'}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    <div className="section-label">Masked Procrastination</div>
-                    <div className="mono" style={{ fontSize: 36, fontWeight: 700, color: recentAvoidance > 2 ? 'var(--accent-amber)' : 'var(--text-primary)', letterSpacing: '-0.03em' }}>
-                      {recentAvoidance} Events
-                    </div>
-                    <div style={{ fontSize: 13, color: recentAvoidance > 2 ? 'var(--accent-amber)' : 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.5 }}>
-                      Days in last 14 where AI/PM work spiked while CAT MVDs failed.
+                    <div className="mono" style={{ fontSize: 10, color: daysSinceMock > 14 ? 'var(--accent-rose)' : 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                      {daysSinceMock > 14 ? 'HIGH_RISK : YOU_ARE_AVOIDING_REALITY' : 'ACCEPTABLE_RANGE'}
                     </div>
                   </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                    <div className="section-label">Friction Journals</div>
-                    <div className="mono" style={{ fontSize: 36, fontWeight: 700, color: 'var(--accent-cyan)', letterSpacing: '-0.03em' }}>
-                      {frictionLogs} Logs
+                    <div className="hud-text">MASKED_PROCRASTINATION</div>
+                    <div className="hud-value" style={{ color: recentAvoidance > 2 ? 'var(--accent-amber)' : 'var(--text-primary)' }}>
+                      {recentAvoidance} EVENTS
                     </div>
-                    <div style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.5 }}>
-                      Total qualitative friction events analyzed in Operator Journal.
+                    <div className="mono" style={{ fontSize: 10, color: recentAvoidance > 2 ? 'var(--accent-amber)' : 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                      MVD_FAILED_WHILE_PM_WORK_SPIKED
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    <div className="hud-text">FRICTION_JOURNALS</div>
+                    <div className="hud-value" style={{ color: 'var(--accent-cyan)' }}>
+                      {frictionLogs} LOGS
+                    </div>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                      QUALITATIVE_FRICTION_EVENTS_ANALYZED
                     </div>
                   </div>
                 </>

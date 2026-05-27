@@ -33,25 +33,26 @@ function TopicForm({ topic, onClose }: { topic?: RevisionTopic; onClose: () => v
     onClose();
   };
 
-  const inputStyle = { width: '100%', padding: '12px 16px', borderRadius: 'var(--radius-md)', fontSize: 14, background: 'rgba(255,255,255,0.025)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', outline: 'none', transition: 'all 0.2s' };
-  const labelStyle = { fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, display: 'block', textTransform: 'uppercase' as const, letterSpacing: '0.06em', fontWeight: 700 };
+  const inputStyle = { width: '100%', padding: '12px 16px', fontSize: 13, fontFamily: 'Geist Mono, monospace', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', color: 'var(--accent-cyan)', outline: 'none', transition: 'all 0.2s' };
+  const labelStyle = { fontSize: 10, color: 'var(--text-secondary)', marginBottom: 8, display: 'block', textTransform: 'uppercase' as const, letterSpacing: '0.1em', fontFamily: 'Geist Mono, monospace' };
 
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(5, 5, 10, 0.85)', backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(5, 5, 10, 0.9)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 }}
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <motion.div
-        initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} transition={{ duration: 0.3, ease: 'easeOut' }}
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-xl)', padding: 40, width: '100%', maxWidth: 640, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 24px 64px -16px rgba(0,0,0,0.8)' }}
+        initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }} transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="cockpit-panel"
+        style={{ padding: 40, width: '100%', maxWidth: 640, maxHeight: '90vh', overflowY: 'auto', border: '1px solid var(--accent-cyan)', boxShadow: '0 0 30px rgba(0,229,255,0.1)' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
           <div>
-            <div className="section-label" style={{ marginBottom: 8 }}>Knowledge Base</div>
-            <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.03em' }}>{topic ? 'Edit Intelligence' : 'Log New Concept'}</div>
+            <div className="hud-text" style={{ marginBottom: 8, color: 'var(--accent-cyan)' }}>[ KNOWLEDGE_BASE ]</div>
+            <div className="mono" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>{topic ? 'EDIT_INTELLIGENCE' : 'LOG_NEW_CONCEPT'}</div>
           </div>
-          <button onClick={onClose} style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', padding: 8, transition: 'all 0.2s' }} onMouseOver={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-glass-hover)'; }} onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'var(--bg-glass)'; }}>
+          <button onClick={onClose} className="btn-ghost" style={{ padding: 8 }}>
             <X size={18} />
           </button>
         </div>
@@ -85,17 +86,15 @@ function TopicForm({ topic, onClose }: { topic?: RevisionTopic; onClose: () => v
                   key={value}
                   onClick={() => setForm((f) => ({ ...f, retention: value as 1 | 2 | 3 | 4 | 5 }))}
                   style={{
-                    flex: 1, padding: '16px 8px', borderRadius: 'var(--radius-md)', border: `1px solid ${form.retention === value ? color : 'var(--border-subtle)'}`,
-                    background: form.retention === value ? `${color}15` : 'var(--bg-glass)',
-                    color: form.retention === value ? color : 'var(--text-muted)',
-                    cursor: 'pointer', fontSize: 14, fontWeight: 600, transition: 'all 0.2s',
-                    boxShadow: form.retention === value ? `0 0 16px ${color}20` : 'none'
+                    flex: 1, padding: '16px 8px', border: `1px solid ${form.retention === value ? color : 'var(--border-subtle)'}`,
+                    background: form.retention === value ? `rgba(${color === 'var(--accent-primary)' ? '0,229,255' : color === 'var(--accent-green)' ? '0,255,102' : '255,255,255'}, 0.1)` : 'var(--bg-surface)',
+                    color: form.retention === value ? color : 'var(--text-secondary)',
+                    cursor: 'pointer', fontFamily: 'Geist Mono, monospace', transition: 'all 0.2s',
+                    boxShadow: form.retention === value ? `inset 0 0 10px ${color}` : 'none'
                   }}
-                  onMouseOver={(e) => { if(form.retention !== value) { e.currentTarget.style.background = 'var(--bg-glass-hover)'; e.currentTarget.style.borderColor = 'var(--border-default)'; } }}
-                  onMouseOut={(e) => { if(form.retention !== value) { e.currentTarget.style.background = 'var(--bg-glass)'; e.currentTarget.style.borderColor = 'var(--border-subtle)'; } }}
                 >
-                  {'★'.repeat(value)}<br />
-                  <span style={{ fontSize: 10, opacity: 0.9, textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 8, display: 'block' }}>{label}</span>
+                  <div className="mono" style={{ fontSize: 16 }}>{'★'.repeat(value)}</div>
+                  <span style={{ fontSize: 9, opacity: 0.9, textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 8, display: 'block' }}>{label}</span>
                 </button>
               ))}
             </div>
@@ -118,8 +117,8 @@ function TopicForm({ topic, onClose }: { topic?: RevisionTopic; onClose: () => v
           </div>
 
           <div style={{ display: 'flex', gap: 16, justifyContent: 'flex-end', marginTop: 8 }}>
-            <button className="btn-ghost" onClick={onClose} style={{ padding: '12px 24px' }}>Cancel</button>
-            <button className="btn-primary" onClick={handleSave} style={{ padding: '12px 28px', fontSize: 14 }}>{topic ? 'Update Intelligence' : 'Log Concept'}</button>
+            <button className="btn-ghost" onClick={onClose} style={{ padding: '10px 24px' }}>[ CANCEL ]</button>
+            <button className="btn-primary" onClick={handleSave} style={{ padding: '10px 28px' }}>[ {topic ? 'UPDATE_INTELLIGENCE' : 'LOG_CONCEPT'} ]</button>
           </div>
         </div>
       </motion.div>
@@ -167,29 +166,26 @@ export default function RevisionPage() {
       {/* ── Header ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Knowledge Base
-          </div>
-          <h1 className="mono gradient-text" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, textTransform: 'uppercase' }}>
-            Spaced Repetition
+          <div className="hud-text" style={{ marginBottom: 12 }}>KNOWLEDGE_BASE</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            SPACED_REPETITION
           </h1>
         </div>
         <button className="btn-primary" onClick={() => setShowForm(true)} style={{ padding: '10px 20px' }}>
-          <Plus size={16} /> Log Concept
+          <Plus size={14} /> [ LOG_CONCEPT ]
         </button>
       </div>
 
       {/* ── Stats row ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
         {[
-          { label: 'Total Tracked', value: topics.length, color: 'var(--accent-cyan)' },
-          { label: 'Critical Due', value: dueTopics.length, color: dueTopics.length > 0 ? 'var(--accent-amber)' : 'var(--accent-green)' },
-          { label: 'Mastered', value: masteredCount, color: 'var(--accent-green)' },
+          { label: 'TOTAL_TRACKED', value: topics.length, color: 'var(--accent-cyan)' },
+          { label: 'CRITICAL_DUE', value: dueTopics.length, color: dueTopics.length > 0 ? 'var(--accent-rose)' : 'var(--accent-green)' },
+          { label: 'MASTERED', value: masteredCount, color: 'var(--accent-green)' },
         ].map(({ label, value, color }) => (
-          <div key={label} className="surface-card" style={{ padding: '24px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: color, opacity: 0.5 }} />
-            <div className="mono" style={{ fontSize: 36, fontWeight: 700, color, lineHeight: 1, letterSpacing: '-0.03em' }}>{value}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 12, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{label}</div>
+          <div key={label} className="cockpit-panel" style={{ padding: '24px', borderTop: `2px solid ${color}` }}>
+            <div className="hud-value" style={{ color }}>{value}</div>
+            <div className="hud-text" style={{ marginTop: 12, color: 'var(--text-secondary)' }}>{label}</div>
           </div>
         ))}
       </div>
@@ -204,13 +200,13 @@ export default function RevisionPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           {/* Filters */}
           <div style={{ display: 'flex', gap: 16 }}>
-            <select value={filterSubject} onChange={(e) => setFilterSubject(e.target.value as Section | 'All')} style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', padding: '10px 16px', borderRadius: 'var(--radius-md)', fontSize: 13, outline: 'none', fontWeight: 500, cursor: 'pointer' }}>
-              <option value="All" style={{ background: 'var(--bg-elevated)' }}>All Sectors</option>
-              {SECTIONS.map((s) => <option key={s} value={s} style={{ background: 'var(--bg-elevated)' }}>{s}</option>)}
+            <select value={filterSubject} onChange={(e) => setFilterSubject(e.target.value as Section | 'All')} style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', color: 'var(--accent-cyan)', padding: '10px 16px', fontSize: 11, fontFamily: 'Geist Mono, monospace', outline: 'none', cursor: 'pointer', textTransform: 'uppercase' }}>
+              <option value="All" style={{ background: 'var(--bg-elevated)' }}>[ ALL_SECTORS ]</option>
+              {SECTIONS.map((s) => <option key={s} value={s} style={{ background: 'var(--bg-elevated)' }}>[ {s} ]</option>)}
             </select>
-            <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as TopicStatus | 'All')} style={{ background: 'var(--bg-glass)', border: '1px solid var(--border-subtle)', color: 'var(--text-primary)', padding: '10px 16px', borderRadius: 'var(--radius-md)', fontSize: 13, outline: 'none', fontWeight: 500, cursor: 'pointer' }}>
-              <option value="All" style={{ background: 'var(--bg-elevated)' }}>All Statuses</option>
-              {TOPIC_STATUS.map((s) => <option key={s} value={s} style={{ background: 'var(--bg-elevated)' }}>{s}</option>)}
+            <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as TopicStatus | 'All')} style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border-subtle)', color: 'var(--accent-cyan)', padding: '10px 16px', fontSize: 11, fontFamily: 'Geist Mono, monospace', outline: 'none', cursor: 'pointer', textTransform: 'uppercase' }}>
+              <option value="All" style={{ background: 'var(--bg-elevated)' }}>[ ALL_STATUSES ]</option>
+              {TOPIC_STATUS.map((s) => <option key={s} value={s} style={{ background: 'var(--bg-elevated)' }}>[ {s.toUpperCase()} ]</option>)}
             </select>
           </div>
 
@@ -222,70 +218,66 @@ export default function RevisionPage() {
                 return (
                   <motion.div
                     key={topic.id} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                    className="surface-card"
+                    className="cockpit-panel"
                     style={{
-                      padding: 32,
-                      borderColor: isDueForRev ? 'rgba(251, 191, 36, 0.4)' : undefined, // Amber border
-                      background: isDueForRev ? 'rgba(251, 191, 36, 0.05)' : undefined, // Amber bg
+                      padding: '24px',
+                      borderColor: isDueForRev ? 'var(--accent-rose)' : undefined, // Rose border
+                      background: isDueForRev ? 'rgba(255, 51, 102, 0.05)' : undefined, // Rose bg
                       display: 'flex', flexDirection: 'column', gap: 24,
                       position: 'relative',
-                      overflow: 'hidden'
                     }}
                   >
-                    {isDueForRev && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'var(--accent-amber)' }} />}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <div style={{ fontSize: 11, fontWeight: 800, color: SECTION_COLORS[topic.subject as keyof typeof SECTION_COLORS], letterSpacing: '0.08em', marginBottom: 12, textTransform: 'uppercase' }}>
+                        <div className="hud-text" style={{ color: SECTION_COLORS[topic.subject as keyof typeof SECTION_COLORS], marginBottom: 8 }}>
                           {topic.subject}
                         </div>
-                        <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4, letterSpacing: '-0.02em' }}>
+                        <div className="mono" style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4, textTransform: 'uppercase' }}>
                           {topic.name}
                         </div>
                       </div>
                       {isDueForRev && (
-                        <div style={{ padding: '6px 12px', background: 'rgba(251,191,36,0.15)', color: 'var(--accent-amber)', borderRadius: 99, fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(251,191,36,0.3)' }}>
-                          <AlertTriangle size={12} strokeWidth={2.5} /> Due
+                        <div className="hud-text" style={{ padding: '6px 10px', background: 'rgba(255,51,102,0.1)', color: 'var(--accent-rose)', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid var(--accent-rose)' }}>
+                          <AlertTriangle size={12} strokeWidth={2.5} /> TARGET_LOCK
                         </div>
                       )}
                     </div>
 
                     <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', padding: '16px 0', borderTop: '1px solid var(--border-subtle)', borderBottom: topic.notes ? 'none' : '1px solid var(--border-subtle)' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <div style={{ padding: 8, background: 'var(--bg-glass)', borderRadius: '50%' }}><BrainCircuit size={16} color={retention.color} /></div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                          <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>Retention</span>
-                          <span style={{ fontSize: 14, color: retention.color, fontWeight: 700 }}>
-                            {'★'.repeat(topic.retention)} <span style={{ opacity: 0.3 }}>{'★'.repeat(5 - topic.retention)}</span>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                          <span className="hud-text">RETENTION_LVL</span>
+                          <span className="mono" style={{ fontSize: 14, color: retention.color }}>
+                            {'★'.repeat(topic.retention)} <span style={{ opacity: 0.2 }}>{'★'.repeat(5 - topic.retention)}</span>
                           </span>
                         </div>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <div style={{ padding: 8, background: 'var(--bg-glass)', borderRadius: '50%' }}><Clock size={16} color="var(--text-secondary)" /></div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                          <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>Timeline</span>
-                          <span style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 500 }}>
-                            {topic.lastRevised ? formatDistanceToNow(new Date(topic.lastRevised + 'T00:00:00'), { addSuffix: true }) : 'Never revised'}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                          <span className="hud-text">LAST_SYNC</span>
+                          <span className="mono" style={{ fontSize: 12, color: 'var(--text-primary)' }}>
+                            {topic.lastRevised ? formatDistanceToNow(new Date(topic.lastRevised + 'T00:00:00'), { addSuffix: true }) : 'NEVER_SYNCED'}
                           </span>
                         </div>
                       </div>
                     </div>
 
                     {topic.notes && (
-                      <div style={{ padding: 16, background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-md)', fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, fontWeight: 500, border: '1px solid var(--border-subtle)' }}>
+                      <div className="mono" style={{ padding: 12, background: 'rgba(0,0,0,0.3)', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6, border: '1px solid var(--border-subtle)', textTransform: 'uppercase' }}>
                         {topic.notes}
                       </div>
                     )}
 
                     <div style={{ display: 'flex', gap: 12, marginTop: 'auto', paddingTop: 16 }}>
                       {isDueForRev && (
-                        <button onClick={() => markRevised(topic.id)} className="btn-primary" style={{ flex: 1, padding: '10px' }}>
-                          Mark Completed
+                        <button onClick={() => markRevised(topic.id)} className="btn-primary" style={{ flex: 1, padding: '8px' }}>
+                          [ MARK_SECURED ]
                         </button>
                       )}
-                      <button onClick={() => setEditTopic(topic)} className="btn-ghost" style={{ flex: isDueForRev ? 0 : 1, padding: '10px 20px' }}>
-                        Edit
+                      <button onClick={() => setEditTopic(topic)} className="btn-ghost" style={{ flex: isDueForRev ? 0 : 1, padding: '8px 16px' }}>
+                        [ EDIT ]
                       </button>
-                      <button onClick={() => deleteTopic(topic.id)} className="btn-ghost" style={{ padding: '10px 14px', color: 'var(--accent-rose)', borderColor: 'transparent', background: 'rgba(251,113,133,0.05)' }} onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(251,113,133,0.15)'; }} onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(251,113,133,0.05)'; }}>
+                      <button onClick={() => deleteTopic(topic.id)} className="btn-ghost" style={{ padding: '8px 12px', color: 'var(--accent-rose)', borderColor: 'transparent' }} onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--accent-rose)'; }} onMouseOut={(e) => { e.currentTarget.style.borderColor = 'transparent'; }}>
                         <Trash2 size={16} />
                       </button>
                     </div>

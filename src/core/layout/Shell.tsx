@@ -80,16 +80,17 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg-app)', position: 'relative' }}>
       <StoreHydrator />
       <Sidebar />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 1, background: 'var(--bg-app)' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', zIndex: 1, position: 'relative' }}>
+        <div className="scan-line" />
         <main style={{ flex: 1, overflow: 'auto' }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={pathname}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15, ease: 'easeOut' }}
-              style={{ minHeight: '100%', padding: '48px 64px', maxWidth: 1200, margin: '0 auto' }}
+              initial={{ opacity: 0, scale: 0.98, filter: 'blur(4px)' }}
+              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 1.02, filter: 'blur(4px)' }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              style={{ minHeight: '100%', padding: '40px 60px', maxWidth: 1400, margin: '0 auto' }}
             >
               {children}
             </motion.div>

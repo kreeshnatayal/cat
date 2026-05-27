@@ -11,7 +11,7 @@ interface SurfaceCardProps extends HTMLMotionProps<"div"> {
 export function SurfaceCard({ children, spotlight, className = '', ...props }: SurfaceCardProps) {
   return (
     <motion.div
-      className={`surface ${className}`}
+      className={`cockpit-panel ${className}`}
       {...props}
     >
       {children}

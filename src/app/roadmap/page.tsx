@@ -19,11 +19,9 @@ export default function RoadmapPage() {
       {/* ── Header ── */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexShrink: 0 }}>
         <div>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            Strategic Blueprint
-          </div>
-          <h1 className="mono gradient-text-blue" style={{ fontSize: 'clamp(40px, 6vw, 64px)', fontWeight: 800, letterSpacing: '-0.04em', lineHeight: 1, textTransform: 'uppercase' }}>
-            Escalation Roadmap
+          <div className="hud-text" style={{ marginBottom: 12 }}>STRATEGIC_BLUEPRINT</div>
+          <h1 className="mono" style={{ fontSize: 'clamp(40px, 6vw, 64px)', fontWeight: 800, letterSpacing: '0.05em', lineHeight: 1, textTransform: 'uppercase', color: 'var(--accent-cyan)', textShadow: '0 0 20px rgba(0,229,255,0.3)' }}>
+            ESCALATION_ROADMAP
           </h1>
         </div>
       </div>
@@ -39,45 +37,32 @@ export default function RoadmapPage() {
               onClick={() => setPhaseOverride(phase.id)}
               style={{
                 flexShrink: 0,
-                padding: '20px 28px',
-                borderRadius: 'var(--radius-)',
-                background: isSelected ? 'var(--text-primary)' : 'var(--bg-glass)',
-                color: isSelected ? 'var(--bg-base)' : 'var(--text-secondary)',
-                border: `1px solid ${isSelected ? 'transparent' : 'var(--border-subtle)'}`,
+                padding: '20px 24px',
+                background: isSelected ? 'rgba(0,229,255,0.1)' : 'rgba(0,0,0,0.4)',
+                color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
+                border: `1px solid ${isSelected ? 'var(--accent-cyan)' : 'var(--border-subtle)'}`,
+                borderLeft: isSelected ? '4px solid var(--accent-cyan)' : `1px solid var(--border-subtle)`,
                 cursor: 'pointer',
-                transition: 'all 0.25s ease',
+                transition: 'all 0.2s',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 gap: 8,
                 position: 'relative',
-                minWidth: 180,
-                boxShadow: isSelected ? '0 8px 32px rgba(255,255,255,0.15)' : 'none',
-                transform: isSelected ? 'translateY(-2px)' : 'none',
-              }}
-              onMouseOver={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = 'var(--bg-glass-hover)';
-                  e.currentTarget.style.borderColor = 'var(--border-default)';
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!isSelected) {
-                  e.currentTarget.style.background = 'var(--bg-glass)';
-                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                }
+                minWidth: 200,
+                boxShadow: isSelected ? 'inset 0 0 20px rgba(0,229,255,0.05)' : 'none',
               }}
             >
               {isActual && !isSelected && (
-                <div style={{ position: 'absolute', top: 16, right: 16, width: 8, height: 8, background: 'var(--accent-primary)', borderRadius: '50%', boxShadow: '0 0 12px var(--accent-primary)' }} />
+                <div style={{ position: 'absolute', top: 16, right: 16, width: 8, height: 8, background: 'var(--accent-cyan)', boxShadow: '0 0 10px var(--accent-cyan)' }} />
               )}
               {isActual && isSelected && (
-                <div style={{ position: 'absolute', top: 16, right: 16, width: 8, height: 8, background: 'var(--bg-base)', borderRadius: '50%', opacity: 0.5 }} />
+                <div style={{ position: 'absolute', top: 16, right: 16, width: 8, height: 8, background: 'var(--accent-cyan)', boxShadow: '0 0 10px var(--accent-cyan)' }} />
               )}
-              <div className="mono" style={{ fontSize: 12, fontWeight: 700, opacity: isSelected ? 0.7 : 0.6, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Phase {phase.id}
+              <div className="mono" style={{ fontSize: 10, color: isSelected ? 'var(--accent-cyan)' : 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                [ PHASE_{phase.id} ]
               </div>
-              <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '-0.02em', textAlign: 'left' }}>
+              <div className="mono" style={{ fontSize: 13, textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.05em', textAlign: 'left' }}>
                 {phase.name}
               </div>
             </button>
@@ -95,23 +80,23 @@ export default function RoadmapPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
           
           {/* Objective Card */}
-          <div className="surface-card spotlight-bg" style={{ padding: 48, overflow: 'hidden', position: 'relative' }}>
+          <div className="cockpit-panel" style={{ padding: 48, overflow: 'hidden', position: 'relative', borderTop: '2px solid var(--accent-cyan)' }}>
             <div style={{ position: 'relative', zIndex: 1 }}>
-              <div style={{ fontSize: 13, color: 'var(--accent-primary)', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 16 }}>
-                {new Date(currentPhase.startDate).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })} – {new Date(currentPhase.endDate).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' })}
+              <div className="hud-text" style={{ color: 'var(--accent-cyan)', marginBottom: 16 }}>
+                {new Date(currentPhase.startDate).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' }).toUpperCase()} // {new Date(currentPhase.endDate).toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()}
               </div>
-              <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', color: 'var(--text-primary)', marginBottom: 40, letterSpacing: '-0.03em', lineHeight: 1.1, fontWeight: 800 }}>
+              <h2 className="mono" style={{ fontSize: 'clamp(32px, 5vw, 48px)', color: 'var(--text-primary)', marginBottom: 40, letterSpacing: '0.02em', lineHeight: 1.1, fontWeight: 700, textTransform: 'uppercase' }}>
                 {currentPhase.focus}
               </h2>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <div className="section-label">Strategic Objectives</div>
+                <div className="hud-text">STRATEGIC_OBJECTIVES</div>
                 {currentPhase.objective.map((obj, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                    <div style={{ marginTop: 4, background: 'var(--bg-glass)', padding: 6, borderRadius: '50%' }}>
-                      <TargetIcon size={16} color="var(--accent-primary)" />
+                    <div style={{ marginTop: 4 }}>
+                      <TargetIcon size={14} color="var(--accent-cyan)" />
                     </div>
-                    <span style={{ fontSize: 16, color: 'var(--text-primary)', lineHeight: 1.6, fontWeight: 500 }}>{obj}</span>
+                    <span className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, textTransform: 'uppercase' }}>{obj}</span>
                   </div>
                 ))}
               </div>
@@ -121,14 +106,13 @@ export default function RoadmapPage() {
           {/* Section Focus Cards */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
             {[
-              { label: 'Quantitative Aptitude', value: currentPhase.qaFocus, color: SECTION_COLORS.QA },
-              { label: 'Data Interpretation & LR', value: currentPhase.dilrFocus, color: SECTION_COLORS.DILR },
-              { label: 'Verbal Ability & RC', value: currentPhase.varcFocus, color: SECTION_COLORS.VARC }
+              { label: 'QUANT_APTITUDE', value: currentPhase.qaFocus, color: SECTION_COLORS.QA },
+              { label: 'DATA_INTERPRETATION', value: currentPhase.dilrFocus, color: SECTION_COLORS.DILR },
+              { label: 'VERBAL_ABILITY', value: currentPhase.varcFocus, color: SECTION_COLORS.VARC }
             ].map(sec => (
-              <div key={sec.label} className="surface-card" style={{ padding: 24, position: 'relative', overflow: 'hidden' }}>
-                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: sec.color, opacity: 0.8 }} />
-                <div style={{ fontSize: 11, fontWeight: 800, color: sec.color, marginBottom: 16, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{sec.label}</div>
-                <div style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6, fontWeight: 500 }}>{sec.value}</div>
+              <div key={sec.label} className="cockpit-panel" style={{ padding: 24, borderTop: `2px solid ${sec.color}` }}>
+                <div className="hud-text" style={{ color: sec.color, marginBottom: 16 }}>{sec.label}</div>
+                <div className="mono" style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6, textTransform: 'uppercase' }}>{sec.value}</div>
               </div>
             ))}
           </div>
@@ -136,42 +120,42 @@ export default function RoadmapPage() {
 
         {/* Sidebar Constraints */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div className="surface-card" style={{ padding: 32 }}>
+          <div className="cockpit-panel" style={{ padding: 32 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
-              <div style={{ padding: 8, background: 'var(--bg-glass)', borderRadius: '50%' }}><Clock size={16} color="var(--text-primary)" /></div>
-              <div className="section-label">Daily Velocity</div>
+              <Clock size={16} color="var(--accent-cyan)" />
+              <div className="hud-text">DAILY_VELOCITY</div>
             </div>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               <div>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Weekdays</div>
-                <div className="mono" style={{ fontSize: 32, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>{currentPhase.weekdayHours}</div>
+                <div className="hud-text" style={{ marginBottom: 6 }}>WEEKDAYS</div>
+                <div className="hud-value">{currentPhase.weekdayHours}</div>
               </div>
-              <div className="divider" />
+              <div style={{ height: 1, background: 'var(--border-subtle)' }} />
               <div>
-                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6, textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Weekends</div>
-                <div className="mono" style={{ fontSize: 32, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>{currentPhase.weekendHours}</div>
+                <div className="hud-text" style={{ marginBottom: 6 }}>WEEKENDS</div>
+                <div className="hud-value">{currentPhase.weekendHours}</div>
               </div>
             </div>
           </div>
 
-          <div className="surface-card" style={{ padding: 32 }}>
+          <div className="cockpit-panel" style={{ padding: 32, borderLeft: '2px solid var(--accent-rose)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-              <div style={{ padding: 8, background: 'var(--bg-glass)', borderRadius: '50%' }}><FlaskConical size={16} color="var(--accent-purple)" /></div>
-              <div className="section-label" style={{ color: 'var(--accent-purple)' }}>Mock Strategy</div>
+              <FlaskConical size={16} color="var(--accent-rose)" />
+              <div className="hud-text" style={{ color: 'var(--accent-rose)' }}>MOCK_STRATEGY</div>
             </div>
-            <div style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6, fontWeight: 500 }}>
+            <div className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, textTransform: 'uppercase' }}>
               {currentPhase.mockStrategy}
             </div>
           </div>
 
-          <div className="surface-card" style={{ padding: 32 }}>
+          <div className="cockpit-panel" style={{ padding: 32, borderLeft: '2px solid var(--accent-amber)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-              <div style={{ padding: 8, background: 'rgba(251, 191, 36, 0.1)', borderRadius: '50%' }}><Zap size={16} color="var(--accent-amber)" /></div>
-              <div className="section-label" style={{ color: 'var(--accent-amber)' }}>Work Balance</div>
+              <Zap size={16} color="var(--accent-amber)" />
+              <div className="hud-text" style={{ color: 'var(--accent-amber)' }}>WORK_BALANCE</div>
             </div>
-            <div style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6, fontWeight: 500 }}>
-              Maintain <strong style={{ color: 'var(--text-primary)' }}>1–2 hrs/day max</strong> on weekdays. Do not abandon projects.
+            <div className="mono" style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.6, textTransform: 'uppercase' }}>
+              MAINTAIN <strong style={{ color: 'var(--accent-amber)' }}>1–2 HRS/DAY MAX</strong> ON WEEKDAYS. DO NOT ABANDON PROJECTS.
             </div>
           </div>
         </div>
