@@ -42,6 +42,19 @@ export default function PlannerPage() {
   const phase       = getCurrentPhase(manualPhaseOverride);
   const dailyTopics = getDailyTopics(today, phase);
 
+  // [SHADOW SYSTEM]: If topics are due, they override the generic daily roadmap topics
+  const getTopicString = (subject: 'QA' | 'DILR' | 'VARC', fallback: string) => {
+    const due = topics.filter(t => isDue(t) && t.subject === subject);
+    if (due.length > 0) return `[DUE] ${due.map(t => t.name).join(' | ')}`;
+    return fallback;
+  };
+
+  const finalTopics = {
+    qa: getTopicString('QA', dailyTopics.qa),
+    dilr: getTopicString('DILR', dailyTopics.dilr),
+    varc: getTopicString('VARC', dailyTopics.varc),
+  };
+
   const [form, setForm] = useState({
     date:           today,
     qaSolved:       existingEntry?.qaSolved        ?? 0,
@@ -203,7 +216,7 @@ USER STATUS:
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <TaskCard
               title="Quantitative Aptitude"
-              subtitle={theme.targets.qa > 0 ? `${theme.targets.qa} Qs target · ${dailyTopics.qa}` : 'Maintenance only today'}
+              subtitle={theme.targets.qa > 0 ? `${theme.targets.qa} Qs target · ${finalTopics.qa}` : 'Maintenance only today'}
               color={SECTION_COLORS.QA}
               value={form.qaSolved}
               onChange={(v) => setForm(f => ({ ...f, qaSolved: v }))}
@@ -212,7 +225,7 @@ USER STATUS:
             />
             <TaskCard
               title="Logical Reasoning & DI"
-              subtitle={theme.targets.dilr > 0 ? `${theme.targets.dilr} Sets target · ${dailyTopics.dilr}` : 'Maintenance only today'}
+              subtitle={theme.targets.dilr > 0 ? `${theme.targets.dilr} Sets target · ${finalTopics.dilr}` : 'Maintenance only today'}
               color={SECTION_COLORS.DILR}
               value={form.dilrSolved}
               onChange={(v) => setForm(f => ({ ...f, dilrSolved: v }))}
@@ -231,7 +244,7 @@ USER STATUS:
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <TaskCard
               title="Verbal Ability & RC"
-              subtitle={theme.targets.varc > 0 ? `${theme.targets.varc} RCs target · ${dailyTopics.varc}` : 'Maintenance only today'}
+              subtitle={theme.targets.varc > 0 ? `${theme.targets.varc} RCs target · ${finalTopics.varc}` : 'Maintenance only today'}
               color={SECTION_COLORS.VARC}
               value={form.rcsRead}
               onChange={(v) => setForm(f => ({ ...f, rcsRead: v }))}
@@ -476,9 +489,9 @@ USER STATUS:
                 style={{ display: 'flex', gap: 24, width: '100%', maxWidth: 900 }}
               >
                 {[
-                  { title: 'QUANT_OPS', subtitle: dailyTopics.qa, color: SECTION_COLORS.QA, key: 'qaSolved' as const, unit: 'QS', target: theme.targets.qa },
-                  { title: 'DILR_OPS', subtitle: dailyTopics.dilr, color: SECTION_COLORS.DILR, key: 'dilrSolved' as const, unit: 'SETS', target: theme.targets.dilr },
-                  { title: 'VARC_OPS', subtitle: dailyTopics.varc, color: SECTION_COLORS.VARC, key: 'rcsRead' as const, unit: 'RCS', target: theme.targets.varc },
+                  { title: 'QUANT_OPS', subtitle: finalTopics.qa, color: SECTION_COLORS.QA, key: 'qaSolved' as const, unit: 'QS', target: theme.targets.qa },
+                  { title: 'DILR_OPS', subtitle: finalTopics.dilr, color: SECTION_COLORS.DILR, key: 'dilrSolved' as const, unit: 'SETS', target: theme.targets.dilr },
+                  { title: 'VARC_OPS', subtitle: finalTopics.varc, color: SECTION_COLORS.VARC, key: 'rcsRead' as const, unit: 'RCS', target: theme.targets.varc },
                 ].map(({ title, subtitle, color, key, unit, target }) => (
                   <div key={key} className="cockpit-panel" style={{ flex: 1, padding: '24px 20px', textAlign: 'center' }}>
                     <div className="hud-text" style={{ color, textShadow: `0 0 10px ${color}`, marginBottom: 8 }}>{title}</div>

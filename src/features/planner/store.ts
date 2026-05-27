@@ -30,13 +30,26 @@ interface PlannerStore {
   getMVDCount: () => number;
 }
 
-import { THEME_DAYS } from '@/core/store/systemStore';
+import { THEME_DAYS, computePerformanceState } from '@/core/store/systemStore';
 
 // Dynamic Completion Calculation based on THEME_DAYS targets
 function calcCompletion(entry: Omit<PlannerEntry, 'completionPercent' | 'mvdMet' | 'id'>): { percent: number; mvdMet: boolean } {
   const dateObj = new Date(entry.date + 'T00:00:00');
   const dayOfWeek = dateObj.getDay();
-  const targets = THEME_DAYS[dayOfWeek].targets;
+  const baseTargets = THEME_DAYS[dayOfWeek].targets;
+
+  // [SHADOW SYSTEM]: Adaptive Targets
+  // Reduce MVD targets by 50% if the system detects burnout or collapse
+  const pState = computePerformanceState();
+  const isRecovery = pState === 'Collapse' || pState === 'Burnout Risk';
+  const multiplier = isRecovery ? 0.5 : 1;
+
+  const targets = {
+    qa: Math.ceil(baseTargets.qa * multiplier),
+    dilr: Math.ceil(baseTargets.dilr * multiplier),
+    varc: Math.ceil(baseTargets.varc * multiplier),
+    rev: Math.ceil(baseTargets.rev * multiplier),
+  };
 
   let score = 0;
   let conditionsMet = 0;

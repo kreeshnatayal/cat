@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Section } from '@/core/utils/constants';
+import { useRevisionStore } from '@/features/revision/store';
 
 export interface SectionData {
   attempted: number;
@@ -106,6 +107,20 @@ export const useMockStore = create<MockStore>()(
         set((s) => ({
           mistakeLog: [...s.mistakeLog, mistake].sort((a, b) => b.date.localeCompare(a.date)),
         }));
+
+        // [SHADOW SYSTEM]: Auto-inject Conceptual/Timing flaws into Revision Engine
+        if (mistake.type === 'Conceptual' || mistake.type === 'Timing') {
+          useRevisionStore.getState().addTopic({
+            id: crypto.randomUUID(),
+            name: `[MOCK_FLAW] ${mistake.description.substring(0, 40)}`,
+            subject: mistake.section === 'General' ? 'QA' : mistake.section,
+            dateStudied: mistake.date,
+            lastRevised: null,
+            retention: 1, // Automatically marked as 'Forgotten' to force immediate review
+            status: 'Not Started',
+            notes: `Auto-generated from mock mistake.\nLearning: ${mistake.learning}`,
+          });
+        }
       },
 
       deleteMistake: (id) => {
