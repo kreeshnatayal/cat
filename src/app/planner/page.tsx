@@ -53,21 +53,21 @@ export default function PlannerPage() {
     notes:          existingEntry?.notes           ?? '',
     frictionSource: existingEntry?.frictionSource  ?? '',
     momentumSource: existingEntry?.momentumSource  ?? '',
+    aiBriefing:     existingEntry?.aiBriefing      ?? '',
   });
 
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [mounted, setMounted]         = useState(false);
-  const [aiOutput, setAiOutput]       = useState('');
   const [aiLoading, setAiLoading]     = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
-  const runAI = async (prompt: string) => {
+  const runAIBriefing = async () => {
     if (aiLoading) return;
     setAiLoading(true);
-    setAiOutput('');
+    setForm(f => ({ ...f, aiBriefing: '' }));
 
-    const system = `You are the CAT OS Tactical AI. You are a brutal, highly analytical, extremely direct strategic coach for a student preparing for CAT. Do NOT be polite. Do NOT use emojis. Military-style sentences only. Under 150 words. Use line breaks.
+    const system = `You are the CAT OS Tactical AI. You are a brutal, highly analytical, extremely direct strategic coach for a student preparing for CAT. Do NOT be polite. Do NOT use emojis. Military-style sentences only. Under 100 words. Use line breaks.
 
 USER STATUS:
 - Phase: ${phase.name}
@@ -76,6 +76,8 @@ USER STATUS:
 - Due Revisions: ${dueCount} topics
 - Total MVDs: ${mvdCount}`;
 
+    const prompt = 'Give me my daily tactical briefing based on my current status.';
+
     try {
       const res = await fetch('/api/ai', {
         method: 'POST',
@@ -83,25 +85,22 @@ USER STATUS:
         body: JSON.stringify({ messages: [{ role: 'system', content: system }, { role: 'user', content: prompt }] })
       });
 
-      if (!res.body) { setAiOutput('[ERROR] No response body.'); return; }
+      if (!res.body) { setForm(f => ({ ...f, aiBriefing: '[ERROR] No response body.' })); return; }
       const reader = res.body.getReader();
       const dec = new TextDecoder();
+      let currentText = '';
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        setAiOutput(p => p + dec.decode(value, { stream: true }));
+        currentText += dec.decode(value, { stream: true });
+        setForm(f => ({ ...f, aiBriefing: currentText }));
       }
     } catch (e: unknown) {
-      setAiOutput(`[ERROR] ${e instanceof Error ? e.message : 'Unknown'}`);
+      setForm(f => ({ ...f, aiBriefing: `[ERROR] ${e instanceof Error ? e.message : 'Unknown'}` }));
     } finally {
       setAiLoading(false);
     }
   };
-
-  const aiActions = [
-    { label: 'DAILY_BRIEFING', prompt: 'Give me my daily tactical briefing based on my current status.' },
-    { label: 'BURN_CHECK', prompt: 'Check if I am burning out. Give me an honest assessment and recovery protocol.' },
-  ];
 
   const { percent: completionPercent, mvdMet } = calcCompletion(form);
 
@@ -115,6 +114,7 @@ USER STATUS:
       revisionMins: Number(form.revisionMins),
       pmHours:      Number(form.pmHours),
       mentalState:  form.mentalState as MentalState,
+      aiBriefing:   form.aiBriefing,
       mvdMet,
       completionPercent,
     };
@@ -255,6 +255,41 @@ USER STATUS:
       ═══════════════════════════════════ */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 48, paddingTop: 4 }}>
 
+        {/* ── Tactical AI Briefing ── */}
+        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+            <Brain size={14} color="var(--accent-cyan)" />
+            <span className="hud-text" style={{ color: 'var(--accent-cyan)' }}>TACTICAL_BRIEFING</span>
+          </div>
+          
+          {!form.aiBriefing && !aiLoading ? (
+            <button
+              onClick={runAIBriefing}
+              className="btn-primary"
+              style={{ width: '100%', padding: '12px', fontSize: 11 }}
+            >
+              [ INITIATE_DAILY_BRIEFING ]
+            </button>
+          ) : (
+            <div style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid var(--border-subtle)', position: 'relative', padding: '16px' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'var(--border-subtle)' }} />
+              <pre className="mono" style={{
+                margin: 0,
+                fontSize: 11,
+                lineHeight: 1.6,
+                color: 'var(--accent-cyan)',
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                textTransform: 'uppercase'
+              }}>
+                {aiLoading && !form.aiBriefing ? '> INITIALIZING_NEURAL_LINK...\n' : ''}
+                {form.aiBriefing}
+                {aiLoading && <span style={{ opacity: 0.5 }}>_</span>}
+              </pre>
+            </div>
+          )}
+        </div>
+
         {/* ── AI/PM Limiter ── */}
         <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
@@ -359,49 +394,6 @@ USER STATUS:
                 style={{ resize: 'none' }}
               />
             </div>
-          </div>
-        </div>
-
-        {/* ── Tactical AI Terminal ── */}
-        <div className="cockpit-panel" style={{ padding: 24, borderRadius: 'var(--radius-md)', display: 'flex', flexDirection: 'column', minHeight: 300 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-            <Brain size={14} color="var(--accent-cyan)" />
-            <span className="hud-text" style={{ color: 'var(--accent-cyan)' }}>TACTICAL_AI_COPILOT</span>
-          </div>
-          
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
-            {aiActions.map(a => (
-              <button
-                key={a.label}
-                onClick={() => runAI(a.prompt)}
-                disabled={aiLoading}
-                className="btn-ghost"
-                style={{
-                  padding: '6px 12px',
-                  fontSize: 10,
-                  opacity: aiLoading ? 0.5 : 1,
-                }}
-              >
-                [ {a.label} ]
-              </button>
-            ))}
-          </div>
-
-          <div style={{ flex: 1, background: 'rgba(0,0,0,0.6)', border: '1px solid var(--border-subtle)', position: 'relative', overflow: 'hidden', padding: '16px' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'var(--border-subtle)' }} />
-            <pre className="mono" style={{
-              margin: 0,
-              fontSize: 11,
-              lineHeight: 1.6,
-              color: aiOutput ? 'var(--accent-cyan)' : 'var(--text-secondary)',
-              whiteSpace: 'pre-wrap',
-              wordBreak: 'break-word',
-              textTransform: 'uppercase'
-            }}>
-              {aiLoading && !aiOutput ? '> INITIALIZING_NEURAL_LINK...\n' : ''}
-              {aiOutput || '> AWAITING_COMMAND.'}
-              {aiLoading && <span style={{ opacity: 0.5 }}>_</span>}
-            </pre>
           </div>
         </div>
       </div>

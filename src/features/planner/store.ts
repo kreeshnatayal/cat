@@ -14,6 +14,7 @@ export interface PlannerEntry {
   notes: string;
   frictionSource?: string;
   momentumSource?: string;
+  aiBriefing?: string;
   mvdMet: boolean;
   completionPercent: number;
 }
