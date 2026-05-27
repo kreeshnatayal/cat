@@ -329,3 +329,51 @@ input::placeholder, textarea::placeholder {
   stroke-dasharray: 2 4 !important;
 }
 .recharts-text { fill: var(--text-tertiary) !important; font-size: 10px !important; font-family: 'Geist Mono', monospace; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* ── Page Container ── */
+.page-container {
+  min-height: 100%;
+}
+
+/* ── Tab System ── */
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 32px;
+}
+.tab-btn {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-bottom: none;
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+  bottom: -1px;
+}
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.03);
+}
+.tab-btn.active {
+  color: var(--accent-cyan);
+  background: var(--bg-panel);
+  border-color: var(--border-subtle);
+  border-bottom-color: var(--bg-panel);
+}
+
+/* ── Urgency indicator ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.3); }
+}
+.pulse {
+  animation: pulse-dot 2s ease-in-out infinite;
+}

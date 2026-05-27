@@ -33,7 +33,10 @@ export function StoreHydrator() {
         lastRevised: null,
         retention: 1,
         status: 'Not Started',
-        notes: ''
+        notes: '',
+        easeFactor: 2.5,
+        interval: 1,
+        repetitions: 0,
       });
       
       const allTopics = [

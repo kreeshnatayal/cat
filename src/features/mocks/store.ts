@@ -116,9 +116,12 @@ export const useMockStore = create<MockStore>()(
             subject: mistake.section === 'General' ? 'QA' : mistake.section,
             dateStudied: mistake.date,
             lastRevised: null,
-            retention: 1, // Automatically marked as 'Forgotten' to force immediate review
+            retention: 1,
             status: 'Not Started',
             notes: `Auto-generated from mock mistake.\nLearning: ${mistake.learning}`,
+            easeFactor: 2.5,
+            interval: 1,
+            repetitions: 0,
           });
         }
       },
