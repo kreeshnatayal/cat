@@ -87,7 +87,7 @@ function TopicForm({ topic, onClose }: { topic?: RevisionTopic; onClose: () => v
                   onClick={() => setForm((f) => ({ ...f, retention: value as 1 | 2 | 3 | 4 | 5 }))}
                   style={{
                     flex: 1, padding: '16px 8px', border: `1px solid ${form.retention === value ? color : 'var(--border-subtle)'}`,
-                    background: form.retention === value ? `rgba(${color === 'var(--accent-primary)' ? '0,229,255' : color === 'var(--accent-green)' ? '0,255,102' : '255,255,255'}, 0.1)` : 'var(--bg-surface)',
+                    background: form.retention === value ? `color-mix(in srgb, ${color} 10%, transparent)` : 'var(--bg-surface)',
                     color: form.retention === value ? color : 'var(--text-secondary)',
                     cursor: 'pointer', fontFamily: 'Geist Mono, monospace', transition: 'all 0.2s',
                     boxShadow: form.retention === value ? `inset 0 0 10px ${color}` : 'none'
